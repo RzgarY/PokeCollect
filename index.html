@@ -184,12 +184,12 @@ html.pdx-l,html.pdx-l body{overflow:hidden}
 .pdx-pk{display:none;position:fixed;left:0;right:0;z-index:5;background-repeat:no-repeat;background-size:100vw auto;pointer-events:none;visibility:hidden;will-change:transform}
 @media (orientation:portrait) and (max-width:900px){
 :root{--pk:min(16vw,96px)}
-.pdx-pk{display:block}
+body{display:flex;flex-direction:column;min-height:calc(100vh - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px));min-height:calc(100dvh - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px))}
+main{width:100%}
+.pdx-pk{display:block;position:relative;left:auto;right:auto;flex:none;width:100%;visibility:hidden;will-change:auto;transform:none}
 html.pdx-r .pdx-pk{visibility:visible}
-.pdx-pt{top:0;height:calc(var(--pk) + env(safe-area-inset-top,0px));background-image:var(--pdx-it);background-position:center bottom;transform:translateY(calc((1 - var(--rt,0))*-100%))}
-.pdx-pb{bottom:0;height:calc(var(--pk) + env(safe-area-inset-bottom,0px));background-image:var(--pdx-ib);background-position:center top;transform:translateY(calc((1 - var(--rb,0))*100%))}
-html.pdx-c main{transform:translateY(calc((var(--rt,0) - var(--rb,0))*var(--pk)))}
-html.pdx-c .fabs{bottom:calc(18px + var(--rb,0)*var(--pk) + env(safe-area-inset-bottom,0px))}}
+.pdx-pt{height:calc(var(--pk) + env(safe-area-inset-top,0px));margin-top:calc(-1*env(safe-area-inset-top,0px));background-image:var(--pdx-it);background-position:center bottom}
+.pdx-pb{margin-top:auto;height:calc(var(--pk) + env(safe-area-inset-bottom,0px));margin-bottom:calc(-1*env(safe-area-inset-bottom,0px));background-image:var(--pdx-ib);background-position:center top}}
 @media (prefers-reduced-motion:reduce){#pdx .pdx-h,#pdx .pdx-band,#pdx .pdx-bg{transition-duration:.01s!important;transition-delay:0s!important}#pdx .pdx-sp{animation-duration:3s}}
 </style>
 <style>
@@ -215,7 +215,7 @@ function go(){
   var m=mq.matches;
   P.classList.add("pdx-open",m?"pdx-mob":"pdx-out");
   H.classList.remove("pdx-l");
-  if(m){H.classList.add("pdx-c");upd()}
+  
   setTimeout(function(){if(m)H.classList.add("pdx-r");P.remove()},m?1500:1900);
 }
 /* sayfanın en üstüne / en altına yaklaştıkça Pokédex parçası çıkar (T = mesafe, px) */
@@ -226,7 +226,7 @@ function upd(){
 }
 var tk=0;
 function sc(){if(tk)return;tk=requestAnimationFrame(function(){tk=0;if(H.classList.contains("pdx-c"))upd()})}
-addEventListener("scroll",sc,{passive:true});addEventListener("resize",sc);
+
 setTimeout(function(){tm=true;go()},MIN);
 setTimeout(function(){ok=true;tm=true;go()},8000); /* yedek: load gelmezse yine de aç */
 if(!ok)addEventListener("load",function(){ok=true;go()});
