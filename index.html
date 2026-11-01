@@ -632,11 +632,12 @@ $("dxd").addEventListener("click",function(e){if(e.target===this)this.classList.
 document.addEventListener("keydown",function(e){if(e.key==="Escape")$("dxd").classList.remove("open")});
 $("dq").addEventListener("input",function(e){dqv=norm(e.target.value);drawDex()});
 $("dgch").addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;dg=+b.dataset.g;buildDgch();drawDex()});
-function dpage(p){scrollTo(0,0);document.body.classList.toggle("pg-dex",p==="dex");document.body.classList.toggle("pg-tcg",p==="tcg");var ov=document.getElementById("tcgOverlay");if(ov)ov.classList.toggle("open",p==="tcg");[].forEach.call(document.querySelectorAll(".dxtabs .b"),function(b){b.classList.toggle("on",b.dataset.pg===p)});if(p==="dex")drawDex();document.body.classList.toggle("pg-bnd",p==="bnd");document.body.classList.toggle("pg-sts",p==="sts");var nb=document.getElementById("bndBtn"),sb=document.getElementById("stsBtn");if(nb)nb.classList.toggle("on",p==="bnd");if(sb)sb.classList.toggle("on",p==="sts");if(p==="bnd"&&window.bndOpen)window.bndOpen();if(p==="sts"&&window.stsOpen)window.stsOpen();if(p==="tcg"&&window.tcgOpen)window.tcgOpen()}
+function setHash(h){try{history.replaceState(null,"",h?"#"+h:location.pathname+location.search)}catch(e){}}
+function dpage(p){var nv=document.querySelector(".navrow"),y0=nv?nv.getBoundingClientRect().top:0;document.body.classList.toggle("pg-dex",p==="dex");document.body.classList.toggle("pg-tcg",p==="tcg");var ov=document.getElementById("tcgOverlay");if(ov)ov.classList.toggle("open",p==="tcg");[].forEach.call(document.querySelectorAll(".dxtabs .b"),function(b){b.classList.toggle("on",b.dataset.pg===p)});if(p==="dex")drawDex();document.body.classList.toggle("pg-bnd",p==="bnd");document.body.classList.toggle("pg-sts",p==="sts");var nb=document.getElementById("bndBtn"),sb=document.getElementById("stsBtn");if(nb)nb.classList.toggle("on",p==="bnd");if(sb)sb.classList.toggle("on",p==="sts");if(p==="bnd"&&window.bndOpen)window.bndOpen();if(p==="sts"&&window.stsOpen)window.stsOpen();if(p==="tcg"&&window.tcgOpen)window.tcgOpen();if(nv){var dy=nv.getBoundingClientRect().top-y0;if(dy)scrollBy(0,dy)}}
 function curPage(){var c=document.body.classList;return c.contains("pg-dex")?"dex":c.contains("pg-tcg")?"tcg":c.contains("pg-bnd")?"bnd":c.contains("pg-sts")?"sts":"col"}
 var HP={"#dex":"dex","#tcg":"tcg","#binder":"bnd","#stats":"sts"};
 function fromHash(){var p=HP[location.hash]||"col";if(p!==curPage())dpage(p)}
-[].forEach.call(document.querySelectorAll(".dxtabs .b"),function(b){b.addEventListener("click",function(){dpage(b.dataset.pg);try{location.hash=b.dataset.pg==="dex"?"dex":b.dataset.pg==="tcg"?"tcg":""}catch(e){}})});
+[].forEach.call(document.querySelectorAll(".dxtabs .b"),function(b){b.addEventListener("click",function(){dpage(b.dataset.pg);setHash(b.dataset.pg==="dex"?"dex":b.dataset.pg==="tcg"?"tcg":"")})});
 addEventListener("hashchange",fromHash);
 document.querySelectorAll(".lsw button").forEach(function(b){b.addEventListener("click",function(){
   lang=b.dataset.l;try{localStorage.setItem("pokemon-lang",lang)}catch(e){}applyLang()})});
@@ -645,8 +646,8 @@ applyLang();fromHash();
 
 <style>
 #tcgOverlay{display:none;width:100%;max-width:100%;min-width:0}#tcgOverlay.open{display:block}
-body.pg-tcg .langbar,body.pg-tcg .top,body.pg-tcg .hero,body.pg-tcg .ctl,body.pg-tcg #list,body.pg-tcg .banner,body.pg-tcg .fabs,body.pg-tcg .dexv{display:none!important}
-body.pg-tcg main#app{padding:12px 16px 48px;max-width:1080px;width:100%;min-width:0;overflow-x:clip}body.pg-tcg{overflow-x:hidden}
+body.pg-tcg .hero,body.pg-tcg .ctl,body.pg-tcg #list,body.pg-tcg .banner,body.pg-tcg .fabs,body.pg-tcg .dexv{display:none!important}
+body.pg-tcg main#app{width:100%;min-width:0;overflow-x:clip}body.pg-tcg{overflow-x:hidden}
 .cc-h{margin:10px 0 2px;font-size:clamp(22px,4vw,30px);font-weight:900}.cc-sub{margin:0 0 12px;color:var(--mu);font-size:14px}
 .cc-add{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .cc-btn{border:1px solid var(--bd);background:var(--sf);color:var(--tx);border-radius:18px;padding:16px 10px;font:800 15px Nunito,system-ui,sans-serif;cursor:pointer;box-shadow:var(--sh)}
@@ -774,7 +775,7 @@ applyLang();
 </script>
 
 <style>
-.navrow{display:flex;align-items:center;gap:10px;margin-bottom:14px}.navrow .dxtabs{flex:1;min-width:0;margin-bottom:0}body.pg-tcg .navrow{margin-bottom:10px}.navb{flex:none}.langbar{flex-direction:column;align-items:flex-end;gap:8px}.sbtn{width:36px;height:36px;font-size:1rem;flex:none}
+.navrow{display:flex;align-items:center;gap:10px;margin-bottom:14px}.navrow .dxtabs{flex:1;min-width:0;margin-bottom:0}.navb{flex:none}.langbar{flex-direction:column;align-items:flex-end;gap:8px}.sbtn{width:36px;height:36px;font-size:1rem;flex:none}
 .dxtabs{overflow-x:auto;scrollbar-width:none;flex-wrap:nowrap}.dxtabs .b{flex:1 1 0;white-space:nowrap;text-align:center}@media (max-width:480px){.dxtabs .b{padding:9px 4px;font-size:.8rem}}
 .pgx{display:none}.pg-bnd #bnd,.pg-sts #sts{display:block}
 .pg-bnd .hero,.pg-bnd .ctl,.pg-bnd #list,.pg-bnd .banner,.pg-bnd .fabs,.pg-sts .hero,.pg-sts .ctl,.pg-sts #list,.pg-sts .banner,.pg-sts .fabs{display:none!important}
@@ -934,8 +935,8 @@ function stsRender(){
    +'<h3 class="sth">'+bt("s_rec")+'</h3>'+(rec.map(function(x){return'<div class="scl"><b>'+esc(x.n)+'</b><span>'+rel(x.t)+'</span></div>'}).join("")||'<p class="hint">'+bt("s_none")+'</p>');
 }
 window.bnPurge=function(id){S.list.forEach(function(b){b.slots.forEach(function(v,i){if(v===id)b.slots[i]=null})});sv();bRender()};window.bndOpen=bRender;window.stsOpen=stsRender;
-$("bndBtn").addEventListener("click",function(){dpage("bnd");try{location.hash="binder"}catch(e){}});
-$("stsBtn").addEventListener("click",function(){dpage("sts");try{location.hash="stats"}catch(e){}});
+$("bndBtn").addEventListener("click",function(){dpage("bnd");setHash("binder")});
+$("stsBtn").addEventListener("click",function(){dpage("sts");setHash("stats")});
 var _al=applyLang;applyLang=function(){_al();bRender();if(document.body.classList.contains("pg-sts"))stsRender()};
 applyLang();
 })();
