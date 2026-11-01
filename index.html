@@ -239,21 +239,17 @@ if(!ok)addEventListener("load",function(){ok=true;go()});
 <header class="top">
 <h1 class="pk tag">Gotta collect ’em all!</h1>
 </header>
-<div class="navrow"><nav class="tabs dxtabs"><button class="b on" data-pg="col" data-i="tabcol">Koleksiyon</button><button class="b" data-pg="tcg" type="button">Card Collection</button><button class="b" data-pg="dex" data-i="tabdex">Pokédex</button></nav><button class="ib navb" id="bndBtn" data-al="bn_tab" aria-label="Binder">📖</button></div>
-<div id="tcgOverlay" role="dialog" aria-modal="true" aria-labelledby="tcgTitle">
- <div id="tcgPanel">
-  <div class="tcg-head"><h2 id="tcgTitle">Pokémon TCG Collection</h2><button id="tcgClose" type="button" aria-label="Close">✕</button></div>
-  <p style="margin:6px 0 0;color:#626a82;font-size:14px">Browse official card sets, track copies by variant, and see your set completion.</p>
-  <div class="tcg-controls"><select id="tcgSet" aria-label="Choose card set"><option value="">Loading sets…</option></select><input id="tcgSearch" type="search" placeholder="Search cards by name or number…" autocomplete="off"></div>
-  <div class="tcg-views" role="group" aria-label="Collection views"><button type="button" data-view="all" class="active">All cards</button><button type="button" data-view="binder">My binder</button><button type="button" data-view="wanted">☆ Wanted list</button></div>
-  <div class="tcg-io" id="tcgIo" role="group" aria-label="Import / Export"><button type="button" id="tcgExpAll" data-tx="exp">⬇ Export collection</button><button type="button" id="tcgExpTpl" data-tx="tpl">📄 Empty template</button><button type="button" id="tcgExpSet" data-tx="sheet" hidden>📋 Export loaded cards</button><button type="button" id="tcgImp" data-tx="imp">⬆ Import JSON</button><input type="file" id="tcgImpFile" accept="application/json,.json" hidden></div>
-  <p class="tcg-iohint" data-tx="hint"></p>
-  <div class="tcg-iobox" id="tcgIoBox" aria-live="polite" hidden></div>
-  <div id="tcgProgressWrap"><div id="tcgProgress"></div></div><div id="tcgSummary">Loading set data…</div>
-  <div class="tcg-status" id="tcgStatus" role="status" aria-live="polite"></div>
-  <div id="tcgGrid"></div><button id="tcgMore" type="button" hidden>Load more cards</button>
- </div>
-</div>
+<div class="navrow"><nav class="tabs dxtabs"><button class="b on" data-pg="col" data-i="tabcol">Koleksiyon</button><button class="b" data-pg="tcg" type="button" data-i="tabcc">Kartlarım</button><button class="b" data-pg="dex" data-i="tabdex">Pokédex</button></nav><button class="ib navb" id="bndBtn" data-al="bn_tab" aria-label="Binder">📖</button></div>
+<div id="tcgOverlay"><div id="ccp">
+<h2 class="cc-h" data-i="cc_title"></h2><p class="cc-sub" data-i="cc_sub"></p>
+<div class="cc-add"><button class="cc-btn pri" id="cccam" type="button" data-i="cc_cam"></button><button class="cc-btn" id="ccgal" type="button" data-i="cc_gal"></button></div>
+<button class="cc-link" id="ccman" type="button" data-i="cc_man"></button>
+<input type="file" id="ccf1" accept="image/*" capture="environment" hidden><input type="file" id="ccf2" accept="image/*" multiple hidden><input type="file" id="ccimpf" accept="application/json,.json" hidden>
+<input id="ccsq" type="search" data-ph="cc_search" autocomplete="off" style="margin-top:14px">
+<div class="cc-fl" id="ccfl" style="margin-top:10px"><button type="button" data-v="all" data-i="cc_all" class="on"></button><button type="button" data-v="own" data-i="cc_own"></button><button type="button" data-v="want" data-i="cc_want"></button></div>
+<div class="cc-sum" id="ccsum"></div><div id="ccgrid"></div>
+<div class="cc-bk"><button class="b" id="ccexp" type="button" data-i="cc_exp"></button><button class="b" id="ccimp" type="button" data-i="cc_imp"></button></div><p class="hint" data-i="cc_hint"></p>
+</div></div>
 <section class="hero">
 <div class="ring"><svg viewBox="0 0 80 80"><circle class="rb" cx="40" cy="40" r="34"/><circle class="rf" id="ring" cx="40" cy="40" r="34" transform="rotate(-90 40 40)"/></svg><b id="rtx">0%</b></div>
 <div class="hx"><div class="big"><b id="cnt">0</b><span id="tot">/ 0</span></div><div class="lab" data-i="collected">kart toplandı</div><div class="lab2" id="left"></div></div>
@@ -294,6 +290,21 @@ if(!ok)addEventListener("load",function(){ok=true;go()});
 <div class="m e" id="emsg"></div>
 </div></div>
 <div class="dlg" id="dxd" role="dialog" aria-modal="true" aria-labelledby="dxn"><div class="box"><div class="bh"><h3 id="dxn"></h3><button class="ib" id="dxx" aria-label="Kapat" data-al="close">✕</button></div><div id="dxb"></div></div></div>
+<div class="dlg" id="ccd" role="dialog" aria-modal="true" aria-labelledby="ccdt"><div class="box">
+<div class="bh"><h3 id="ccdt"></h3><button class="ib" id="ccx" aria-label="Close" data-al="close">✕</button></div>
+<div class="cc-pv" id="ccpv"></div>
+<div class="cc-pb"><button class="b" id="ccecam" type="button" data-i="cc_cam"></button><button class="b" id="ccegal" type="button" data-i="cc_gal"></button></div>
+<label data-i="cc_name"></label><input id="ccn" autocomplete="off">
+<label data-i="cc_mon"></label><div class="cc-chips" id="ccm"></div>
+<div class="cc-row"><input id="ccmi" list="ccdl" autocomplete="off" data-ph="cc_monph"><button class="b" id="ccma" type="button">＋</button></div><datalist id="ccdl"></datalist>
+<div class="cc-g2"><div><label data-i="cc_set"></label><input id="ccs" autocomplete="off"></div><div><label data-i="cc_no"></label><input id="ccno" autocomplete="off"></div></div>
+<div class="cc-g2"><div><label data-i="cc_rar"></label><input id="ccr" list="ccdr" autocomplete="off"></div><div><label data-i="cc_var"></label><input id="ccv" list="ccdv" autocomplete="off"></div></div>
+<datalist id="ccdr"><option value="Common"><option value="Uncommon"><option value="Rare"><option value="Holo Rare"><option value="Double Rare"><option value="Ultra Rare"><option value="Illustration Rare"><option value="Special Illustration Rare"><option value="Hyper Rare"><option value="Promo"></datalist>
+<datalist id="ccdv"><option value="Normal"><option value="Holofoil"><option value="Reverse Holofoil"><option value="1st Edition"><option value="Unlimited"><option value="Poké Ball"><option value="Master Ball"></datalist>
+<label data-i="cc_status"></label><div class="cc-fl" id="ccst"><button type="button" data-s="own" data-i="cc_sown"></button><button type="button" data-s="want" data-i="cc_swant"></button></div>
+<div id="ccqw"><label data-i="cc_qty"></label><div class="cc-q2"><button class="b" id="ccqm" type="button">−</button><b id="ccqn">1</b><button class="b" id="ccqp" type="button">＋</button></div></div>
+<div class="bt"><button class="b pri" id="ccsv" type="button"></button><button class="b" id="ccsk" type="button" data-i="cc_skip"></button><button class="b dan" id="ccdel" type="button"></button></div>
+<div class="m e" id="ccmsg"></div></div></div>
 <script>
 var T=["Gen 1 · Kanto","Gen 2 · Johto","Gen 3 · Hoenn","Gen 4 · Sinnoh","Gen 5 · Unova","Gen 6 · Kalos","Gen 7 · Alola","Gen 8 · Galar","Gen 9 · Paldea","Non-starter"],NS=9;
 var STARTERS=[
@@ -635,591 +646,111 @@ applyLang();fromHash();
 </script>
 
 <style>
-#tcgLaunch{display:none!important}
-#tcgOverlay{display:none;position:static;inset:auto;z-index:auto;background:transparent;overflow:visible;padding:0;margin:0;width:100%;max-width:100%;min-width:0;grid-column:1/-1}
-#tcgOverlay.open{display:block;width:100%;max-width:100%;min-width:0;overflow:hidden}
-#tcgPanel{width:100%;max-width:100%;min-width:0;min-height:0;margin:0;background:transparent;color:var(--tx);border-radius:0;padding:0;box-shadow:none;font-family:inherit;overflow:hidden}
-.tcg-head{display:flex;align-items:center;gap:12px;justify-content:space-between;flex-wrap:wrap;margin:8px 0 4px}.tcg-head h2{margin:0;font-size:clamp(22px,3vw,30px);color:var(--tx);font-weight:900}#tcgClose{border:1px solid var(--bd);border-radius:99px;padding:8px 13px;background:var(--sf);color:var(--tx);font-size:14px;font-weight:800;cursor:pointer}
-#tcgPanel>p{color:var(--mu)!important;font-size:14px}
-.tcg-controls{display:grid;width:100%;min-width:0;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:12px 0 10px}
-.tcg-controls select,.tcg-controls input,.tcg-card select{width:100%;min-width:0;padding:12px 14px;border:1px solid var(--bd);border-radius:14px;background:var(--sf2);color:var(--tx);font:700 14px Nunito,system-ui,sans-serif}
-#tcgProgressWrap{background:var(--bd);border-radius:12px;height:10px;overflow:hidden;margin:12px 0 5px}#tcgProgress{height:100%;width:0;background:var(--ac);transition:width .2s}
-#tcgSummary{font-size:13px;color:var(--mu);margin-bottom:14px}.tcg-status{padding:12px 14px;border-radius:14px;background:var(--grbg);color:var(--grtx);border:1px solid var(--grbd);margin:12px 0;font-size:14px}.tcg-status:empty{display:none}
-#tcgGrid{display:grid;width:100%;min-width:0;grid-template-columns:repeat(auto-fill,minmax(min(155px,100%),1fr));gap:12px}
-.tcg-card{background:var(--sf);border:1px solid var(--bd);border-radius:16px;padding:10px;min-width:0;box-shadow:var(--sh);display:flex;flex-direction:column;color:var(--tx)}
-.tcg-card.owned{border:2px solid #47a879;background:var(--grbg);padding:9px}
-.tcg-card img{width:100%;height:190px;object-fit:contain;display:block;background:var(--sf2);border-radius:10px}
-.tcg-card .tcg-name{font-size:14px;font-weight:800;line-height:1.25;margin:8px 0 3px}.tcg-meta{font-size:11px;color:var(--mu);margin-bottom:8px}
-.tcg-card select{padding:7px;font-size:12px;margin-top:auto}.tcg-wanted{width:100%;margin-top:8px;padding:7px 8px;border:1px solid var(--bd);border-radius:99px;background:var(--sf);color:var(--tx);font:inherit;font-size:12px;cursor:pointer}.tcg-wanted[aria-pressed="true"]{border-color:var(--ac);font-weight:700}
-.tcg-qty{display:flex;align-items:center;justify-content:space-between;gap:7px;margin-top:8px}
-.tcg-qty button{border:0;border-radius:99px;background:var(--sf2);color:var(--tx);font-weight:900;font-size:19px;width:34px;height:32px;cursor:pointer}.tcg-qty button:disabled{opacity:.35;cursor:default}.tcg-count{font-weight:900;font-size:14px;min-width:22px;text-align:center}.tcg-views{display:flex;gap:6px;flex-wrap:wrap;margin:12px 0}.tcg-views button{border:1px solid var(--bd);background:var(--sf);border-radius:99px;padding:9px 14px;font-weight:800;color:var(--mu);cursor:pointer}.tcg-views button.active{background:var(--ac);color:#fff;border-color:var(--ac)}.tcg-wanted.on{background:var(--grbg);border-color:var(--grbd);color:var(--grtx)}
-#tcgMore{display:block;margin:18px auto 4px;border:0;border-radius:99px;padding:12px 20px;background:var(--ac);color:#fff;font-weight:800;cursor:pointer}#tcgMore[hidden]{display:none}
+#tcgOverlay{display:none;width:100%;max-width:100%;min-width:0}#tcgOverlay.open{display:block}
 body.pg-tcg .langbar,body.pg-tcg .top,body.pg-tcg .hero,body.pg-tcg .ctl,body.pg-tcg #list,body.pg-tcg .banner,body.pg-tcg .fabs,body.pg-tcg .dexv{display:none!important}
-body.pg-tcg main#app{padding:12px 16px 48px;max-width:1080px;width:100%;min-width:0;overflow-x:clip}
-body.pg-tcg main#app>.dxtabs{margin-bottom:10px}
-body.pg-tcg #tcgTitle{font-size:clamp(20px,4vw,28px)}
-body.pg-tcg #tcgPanel>p{margin:4px 0 0!important}
-body.pg-tcg #tcgGrid,body.pg-tcg .tcg-head,body.pg-tcg .tcg-views,body.pg-tcg #tcgSummary,body.pg-tcg #tcgProgressWrap{max-width:100%;min-width:0}
-body.pg-tcg{overflow-x:hidden}
-body.pg-tcg #tcgClose{display:none}
-@media(max-width:540px){#tcgGrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.tcg-card img{height:155px}.tcg-card{padding:7px}.tcg-card.owned{padding:6px}.tcg-controls{grid-template-columns:1fr}}
+body.pg-tcg main#app{padding:12px 16px 48px;max-width:1080px;width:100%;min-width:0;overflow-x:clip}body.pg-tcg{overflow-x:hidden}
+.cc-h{margin:10px 0 2px;font-size:clamp(22px,4vw,30px);font-weight:900}.cc-sub{margin:0 0 12px;color:var(--mu);font-size:14px}
+.cc-add{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.cc-btn{border:1px solid var(--bd);background:var(--sf);color:var(--tx);border-radius:18px;padding:16px 10px;font:800 15px Nunito,system-ui,sans-serif;cursor:pointer;box-shadow:var(--sh)}
+.cc-btn.pri{background:linear-gradient(135deg,#ff4d5e,#ff8a4c);border:0;color:#fff}
+.cc-link{display:block;margin:10px auto 0;background:none;border:0;color:var(--mu);font:800 13px Nunito,system-ui,sans-serif;text-decoration:underline;cursor:pointer}
+.cc-fl{display:flex;gap:2px;background:var(--sf2);border-radius:99px;padding:3px}
+.cc-fl button{flex:1;border:0;background:none;border-radius:99px;padding:9px 12px;color:var(--mu);font:800 14px Nunito,system-ui,sans-serif;cursor:pointer}.cc-fl button.on{background:var(--ac);color:#fff}
+.cc-sum{margin:12px 0;font-size:13px;color:var(--mu)}.cc-em{grid-column:1/-1;text-align:center;color:var(--mu);padding:28px 0}
+#ccgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(150px,100%),1fr));gap:12px}
+.cc-card{display:flex;flex-direction:column;min-width:0;text-align:left;background:var(--sf);border:1px solid var(--bd);border-radius:16px;padding:8px;box-shadow:var(--sh);color:var(--tx);cursor:pointer;font-family:inherit}
+.cc-ph{position:relative;aspect-ratio:5/7;border-radius:10px;overflow:hidden;background:var(--sf2);display:flex;align-items:center;justify-content:center}
+.cc-ph>img{width:100%;height:100%;object-fit:contain}.cc-card.want .cc-ph>img{filter:grayscale(1);opacity:.75}.cc-ph .ball,.cc-np .ball{width:44px;height:44px}
+.cc-q,.cc-w{position:absolute;background:var(--ac);color:#fff;border-radius:99px;padding:2px 8px;font-size:12px;font-weight:800}.cc-q{right:6px;bottom:6px}.cc-w{left:6px;top:6px}
+.cc-nm{font-size:14px;font-weight:800;margin:8px 0 3px;line-height:1.2}.cc-mt{display:flex;align-items:center;gap:4px;flex-wrap:wrap;font-size:11px;color:var(--mu)}.cc-mt img{width:26px;height:26px;object-fit:contain}
+.cc-bk{display:flex;gap:8px;margin-top:22px}
+.cc-pv{display:flex;justify-content:center;margin:6px 0 10px}.cc-pv img{max-height:240px;max-width:100%;border-radius:12px;box-shadow:var(--sh)}.cc-np{height:120px;display:flex;align-items:center}
+.cc-pb{display:flex;gap:8px}.cc-pb .b{flex:1}.cc-row{display:flex;gap:8px}.cc-row .b{flex:none}.cc-g2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.cc-chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:6px}.cc-chip{display:flex;align-items:center;gap:4px;border:1px solid var(--bd);background:var(--sf2);border-radius:99px;padding:2px 4px 2px 8px;font-weight:800;font-size:13px}.cc-chip img{width:28px;height:28px;object-fit:contain}.cc-chip button{border:0;background:none;color:var(--mu);cursor:pointer;padding:4px 6px}
+.cc-q2{display:flex;align-items:center;gap:14px}.cc-q2 b{min-width:36px;text-align:center;font-size:1.2rem}
+@media(max-width:540px){#ccgrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}}
 </style>
-<style>
-.tcg-io{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0 4px}
-.tcg-io button{border:1px solid var(--bd);background:var(--sf);border-radius:99px;padding:9px 14px;font-weight:800;color:var(--tx);cursor:pointer;font-family:inherit;font-size:13px}
-.tcg-io button:disabled{opacity:.45;cursor:default}.tcg-io button[hidden]{display:none}
-.tcg-iohint{margin:2px 0 8px;font-size:12px;color:var(--mu)}
-.tcg-iobox{border:1px solid var(--bd);background:var(--sf);border-radius:16px;padding:12px 14px;margin:8px 0 12px;font-size:14px;color:var(--tx)}.tcg-iobox[hidden]{display:none}
-.tcg-iobox .io-l{margin:8px 0;padding-left:18px;color:var(--mu);font-size:13px}.io-q{font-weight:800;margin:10px 0 6px}
-.io-modes{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:8px}
-.io-modes button{display:flex;flex-direction:column;gap:3px;text-align:left;border:1px solid var(--bd);background:var(--sf2);color:var(--tx);border-radius:14px;padding:10px 12px;cursor:pointer;font-family:inherit}
-.io-modes button small{color:var(--mu);font-size:11px;font-weight:600}.io-modes button.dan{border-color:#d9534f}
-.io-act{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.io-act button{border:1px solid var(--bd);background:var(--sf);color:var(--tx);border-radius:99px;padding:8px 13px;font-weight:800;cursor:pointer;font-family:inherit;font-size:13px}
-.io-ok{font-weight:900;color:var(--grtx)}.io-err{font-weight:800;color:#d9534f}.io-s{font-size:13px;color:var(--mu);margin-top:4px}
-.io-det{margin-top:10px;font-size:12px;color:var(--mu)}.io-det ul{margin:6px 0 0;padding-left:18px}
-.tcg-vchips{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px}.tcg-vchips span{font-size:10px;font-weight:800;border:1px solid var(--bd);border-radius:99px;padding:2px 7px;color:var(--mu)}.tcg-vchips span.on{border-color:var(--ac);color:var(--tx)}
-</style>
-<button id="tcgLaunch" type="button">🃏 TCG Card Collection</button>
-
 <script>
-(function(){
-"use strict";
-var API="https://api.pokemontcg.io/v2", STORE="pokecollect-tcg-inventory-v1";var tok=0;
-var selV={}, loadingPoke=false, sets=[], cards=[], shown=0, pageSize=60, activeSet="", busy=false, inv={}, wanted={}, view="all", pokemonMap={};
-var $=function(id){return document.getElementById(id)};
-try{inv=JSON.parse(localStorage.getItem(STORE)||"{}");if(!inv||typeof inv!=="object")inv={}}catch(e){inv={}}
- try{wanted=JSON.parse(localStorage.getItem(STORE+"-wanted")||"{}");if(!wanted||typeof wanted!=="object")wanted={}}catch(e){wanted={}}
-try{pokemonMap=JSON.parse(localStorage.getItem(STORE+"-pokemon-map")||"{}");if(!pokemonMap||typeof pokemonMap!=="object")pokemonMap={}}catch(e){pokemonMap={}}
-function savePokemonMap(){try{localStorage.setItem(STORE+"-pokemon-map",JSON.stringify(pokemonMap))}catch(e){}}
-var auto={};try{auto=JSON.parse(localStorage.getItem(STORE+"-auto")||"{}")||{}}catch(e){auto={}}
-function saveAuto(){try{localStorage.setItem(STORE+"-auto",JSON.stringify(auto))}catch(e){}}
-var META={};try{META=JSON.parse(localStorage.getItem(STORE+"-meta")||"{}")||{}}catch(e){META={}}
-function persistMeta(){try{localStorage.setItem(STORE+"-meta",JSON.stringify(META))}catch(e){}}
-function saveMeta(c){if(!c||!c.id)return;META[c.id]={n:c.name,no:c.number||"",r:c.rarity||"",s:(c.set&&c.set.name)||"",i:(c.images&&(c.images.small||c.images.large))||"",p:Array.isArray(c.nationalPokedexNumbers)?c.nationalPokedexNumbers.slice(0,2):[]};persistMeta()}
-function cacheKnown(){cards.forEach(function(c){if((inv[c.id]||wanted[c.id])&&(!META[c.id]||META[c.id].u))saveMeta(c)})}
- function saveWanted(){try{localStorage.setItem(STORE+"-wanted",JSON.stringify(wanted))}catch(e){}}
-function saveInv(){try{localStorage.setItem(STORE,JSON.stringify(inv))}catch(e){status("Could not save to local storage. Export your browser data or free up storage space.")}}
-function esc(v){return String(v==null?"":v).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
-function sstatus(m){if(!cards.length&&!loadingPoke&&!activeSet)status(m)}
-function status(msg){$("tcgStatus").textContent=msg||""}
-function variants(c){var v=c&&c.tcgplayer&&c.tcgplayer.prices?Object.keys(c.tcgplayer.prices):[];var out=["Normal","Holofoil","Reverse Holofoil"];v.forEach(function(x){var n=x.replace(/([a-z])([A-Z])/g,"$1 $2").replace(/(^|-)(\w)/g,function(_,a,b){return (a?" ":"")+b.toUpperCase()});if(out.indexOf(n)<0)out.push(n)});return out}
-function qty(id,v){return Math.max(0,Number(inv[id]&&inv[id][v])||0)}
-function ownedVars(id){return inv[id]?Object.keys(inv[id]).filter(function(x){return qty(id,x)>0}):[]}
-function owned(id){return !!(inv[id]&&Object.keys(inv[id]).some(function(v){return qty(id,v)>0}))}
-function saveQty(id,v,n){if(!inv[id])inv[id]={};if(n>0)inv[id][v]=n;else delete inv[id][v];if(!Object.keys(inv[id]).length)delete inv[id];saveInv();draw(); }
-function getCardVariant(c){var vv=variants(c);return vv.indexOf("Normal")>=0?"Normal":vv[0]}
-function updateSummary(){
- var total=cards.length, have=cards.filter(function(c){return owned(c.id)}).length, pct=total?Math.round(have/total*100):0;
- $("tcgProgress").style.width=pct+"%";
- $("tcgSummary").textContent= total ? have+" of "+total+" cards owned · "+pct+"% complete · "+Object.keys(wanted).filter(function(k){return wanted[k]}).length+" wanted overall" : "Choose a set to start tracking your cards.";
-}
-function draw(){
- var q=$("tcgSearch").value.trim().toLowerCase();
- var list=cards.filter(function(c){return (view!=="binder"||owned(c.id))&&(view!=="wanted"||!!wanted[c.id])&&(!q||(c.name+" "+c.number+" "+(c.rarity||"")).toLowerCase().indexOf(q)>=0)});
- var visible=list.slice(0,shown);
- $("tcgGrid").innerHTML=visible.map(function(c){
-   var ov=ownedVars(c.id),vlist=variants(c),v=(ov.length>1&&selV[c.id])?selV[c.id]:(ov[0]||selV[c.id]||getCardVariant(c));
-   ov.forEach(function(x){if(vlist.indexOf(x)<0)vlist.push(x)});
-   if(vlist.indexOf(v)<0)vlist.unshift(v);
-   var n=qty(c.id,v), img=(c.images&&(c.images.small||c.images.large))||"", isWanted=!!wanted[c.id];
-   return '<article class="tcg-card'+(owned(c.id)?" owned":"")+'" data-card="'+esc(c.id)+'"><img loading="lazy" src="'+esc(img)+'" alt="'+esc(c.name)+' card image"><div class="tcg-name">'+esc(c.name)+'</div><div class="tcg-meta">#'+esc(c.number||"—")+' · '+esc(c.rarity||"Rarity unknown")+'</div><select class="tcg-variant" aria-label="Variant for '+esc(c.name)+'" data-id="'+esc(c.id)+'">'+vlist.map(function(x){return '<option value="'+esc(x)+'"'+(x===v?" selected":"")+'>'+esc(x)+'</option>'}).join("")+'</select>'+(ov.length>1?'<div class="tcg-vchips">'+ov.map(function(x){return '<span'+(x===v?' class="on"':'')+'>'+esc(x)+' ×'+qty(c.id,x)+'</span>'}).join("")+'</div>':'')+'<div class="tcg-qty"><button type="button" data-delta="-1" data-id="'+esc(c.id)+'" aria-label="Remove one copy"'+(n<1?" disabled":"")+'>−</button><span class="tcg-count">'+n+'</span><button type="button" data-delta="1" data-id="'+esc(c.id)+'" aria-label="Add one copy">+</button></div><button class="tcg-wanted" type="button" data-wanted="'+esc(c.id)+'" aria-pressed="'+isWanted+'">'+(isWanted?'★ On wanted list':'☆ Add to wanted list')+'</button></article>';
- }).join("");
- $("tcgMore").hidden=list.length<=shown;
- $("tcgMore").textContent="Load more cards ("+Math.max(0,list.length-shown)+" remaining)";
- updateSummary();ioSync();
-}
-async function api(url,attempt){
- attempt=attempt||0;
- var r;
- var ctl=window.AbortController?new AbortController():null,tmr=ctl?setTimeout(function(){ctl.abort()},20000):0;
- try{r=await fetch(url,ctl?{cache:"no-store",signal:ctl.signal}:{cache:"no-store"});clearTimeout(tmr)}catch(e){clearTimeout(tmr);if(attempt<2){await new Promise(function(resolve){setTimeout(resolve,500*(attempt+1))});return api(url,attempt+1)}throw new Error("Network request failed ("+(e.name==="AbortError"?"timeout":"blocked or offline")+"). If this page is open as a claude.ai artifact, external APIs and images are blocked; host the file on your own site (e.g. GitHub Pages) to use live card data.")}
- if(!r.ok){if((r.status===429||r.status>=500)&&attempt<2){await new Promise(function(resolve){setTimeout(resolve,700*Math.pow(2,attempt))});return api(url,attempt+1)}throw new Error("API request failed ("+r.status+").")}
- return r.json()
-}
-async function loadSets(){
- try{
-  sstatus("Loading Pokémon TCG sets…");
-  var data;
-  try{data=await api(API+"/sets?orderBy=-releaseDate&pageSize=250")}
-  catch(firstError){
-   // Sorting on the server can fail independently; retry with the simpler endpoint.
-   data=await api(API+"/sets?pageSize=250");
-  }
-  sets=data.data||[];
-  sets.sort(function(a,b){return String(b.releaseDate||"").localeCompare(String(a.releaseDate||""))});
-  $("tcgSet").innerHTML='<option value="">Choose a set…</option>'+sets.map(function(x){return '<option value="'+esc(x.id)+'">'+esc(x.name)+' ('+esc(x.series||"")+' · '+esc(x.total||"?")+' cards)</option>'}).join("");
-  sstatus(sets.length?"Choose an expansion set to browse its cards.":"No sets were returned by the API.");
-  var params=new URLSearchParams(location.search), initial=params.get("tcgset");
-  if(initial&&sets.some(function(x){return x.id===initial})){$("tcgSet").value=initial;loadSet(initial)}
- }catch(e){status("The Pokémon TCG API could not load the set list. A 5xx error means the API server is having trouble; check again shortly. "+e.message);$("tcgSet").innerHTML='<option value="">Sets temporarily unavailable — retry by reopening</option>'}
-}
-async function loadPokemon(name){
- var wantedName=String(name||"").trim();if(!wantedName)return;
- view="all";document.querySelectorAll(".tcg-views button").forEach(function(b){b.classList.toggle("active",b.dataset.view===view)});
- $("tcgSet").value="";$("tcgSearch").value="";cards=[];shown=0;$("tcgGrid").innerHTML="";
- var my=++tok;loadingPoke=true;status('Loading all Pokémon TCG cards for '+wantedName+'…');updateSummary();
- try{
-  var page=1,data;
-  do{
-   data=await api(API+"/cards?q="+encodeURIComponent('name:"'+wantedName.replace(/"/g,"")+'"')+"&pageSize=250&page="+page);if(my!==tok)return;
-   cards=cards.concat(data.data||[]);page++;
-  }while(data.data&&data.data.length===250&&page<=16);
-  // Keep the name search active for convenient filtering, but include the full card-name variants.
-  $("tcgSearch").value=wantedName;cacheKnown();
-  shown=Math.min(pageSize,cards.length);
-  status(cards.length?('Found '+cards.length+' cards featuring '+wantedName+'.'):'No TCG cards found for '+wantedName+'.');draw();
- }catch(e){if(my!==tok)return;status('Could not load cards for '+wantedName+'. The API may be temporarily unavailable. '+e.message)}finally{loadingPoke=false}
-}
-async function loadSet(id){
- if(!id){tok++;activeSet="";cards=[];shown=0;draw();return}
- var my=++tok;busy=true;activeSet=id;cards=[];shown=0;$("tcgGrid").innerHTML="";status("Loading cards in this set…");updateSummary();
- try{
-  var page=1, data;
-  do{
-   data=await api(API+"/cards?q="+encodeURIComponent("set.id:"+id)+"&pageSize=250&page="+page+"&orderBy=number");if(my!==tok)return;
-   cards=cards.concat(data.data||[]);page++;
-  }while(data.data&&data.data.length===250&&page<30);
-  shown=Math.min(pageSize,cards.length);
-  cacheKnown();cards.sort(function(a,b){var x=parseInt(a.number,10),y=parseInt(b.number,10);if(isNaN(x)&&isNaN(y))return String(a.number).localeCompare(String(b.number));if(isNaN(x))return 1;if(isNaN(y))return -1;return x-y||String(a.number).localeCompare(String(b.number))});
-  status(cards.length?"":"No cards were found for this set.");
-  draw();
- }catch(e){if(my!==tok)return;status("Could not load cards for this set. Check your connection and try again. "+e.message)}
- finally{busy=false}
-}
-$("tcgLaunch").addEventListener("click",function(){dpage("tcg")});
-function close(){dpage("col");try{location.hash=""}catch(e){}}
-$("tcgClose").addEventListener("click",close);
-$("tcgSet").addEventListener("change",function(){view="all";document.querySelectorAll(".tcg-views button").forEach(function(b){b.classList.toggle("active",b.dataset.view===view)});loadSet(this.value)});
- document.querySelectorAll(".tcg-views button").forEach(function(b){b.addEventListener("click",function(){view=b.dataset.view;document.querySelectorAll(".tcg-views button").forEach(function(x){x.classList.toggle("active",x===b)});draw()})});
- var setsBusy=false;
-window.tcgOpen=function(){if(!sets.length&&!setsBusy){setsBusy=true;loadSets().then(function(){setsBusy=false},function(){setsBusy=false})}};
-window.openPokemonTCG=function(name){dpage("tcg");loadPokemon(name)};
-$("tcgSearch").addEventListener("input",function(){shown=pageSize;draw()});
-$("tcgMore").addEventListener("click",function(){shown+=pageSize;draw()});
-function cardPokemonNames(card){
- if(!card)return [];
- var ids=Array.isArray(card.nationalPokedexNumbers)?card.nationalPokedexNumbers.filter(function(n){return DBM[Number(n)]}):[];
- var names=[];
- ids.forEach(function(id){var name=DBM[Number(id)][1];if(names.indexOf(name)<0)names.push(name)});
- if(!names.length){
-  var cn=norm(card.name).replace(/[’‘]/g,"'");
-  var match=DB.slice().sort(function(a,b){return b[1].length-a[1].length}).find(function(x){var pn=norm(x[1]);return cn===pn||cn.indexOf(pn+" ")===0||cn.indexOf(pn+"-")===0||cn.indexOf(pn+"'")===0||cn.indexOf(pn+" & ")===0});
-  if(match)names.push(match[1]);
- }
- return names;
-}
-function syncPokemonCollection(card){
- var names=cardPokemonNames(card);if(card&&card.id){pokemonMap[card.id]=names;savePokemonMap()}
- var changed=[];
- names.forEach(function(name){
-  if(!has(name)){var entry=DB.find(function(x){return x[1]===name});if(entry){var f=findRow(entry[0]);if(f)putInRow(f.row,name);else R[NS].push([name])}}
-  if(!have[name]){have[name]=true;auto[name]=true;saveAuto();changed.push(name)}
- });
- if(changed.length){save();render();drawDex();}
- return changed;
-}
-function removePokemonFromCollection(name){
- var key=norm(name),real=null;Object.keys(have).forEach(function(k){if(norm(k)===key)real=k});
- if(real&&auto[real]){delete have[real];delete auto[real];saveAuto();save();render();drawDex()}
-}
-async function maybeUncatchPokemon(names){
- // Backfill card-to-Pokémon links for older inventory entries before deciding whether this was the last copy.
- var ids=Object.keys(inv).filter(function(cardId){return Object.keys(inv[cardId]||{}).some(function(v){return qty(cardId,v)>0})&&!Array.isArray(pokemonMap[cardId])});
- for(var i=0;i<ids.length;i++){
-  var id=ids[i],known=cards.find(function(c){return c.id===id});
-  if(known){pokemonMap[id]=cardPokemonNames(known);continue}
-  try{var response=await api(API+"/cards/"+encodeURIComponent(id));if(response&&response.data)pokemonMap[id]=cardPokemonNames(response.data)}catch(e){/* Unknown mapping means we must not risk unchecking a Pokémon incorrectly. */}
- }
- savePokemonMap();
- names.forEach(function(name){
-  var unknown=Object.keys(inv).some(function(cardId){return Object.keys(inv[cardId]||{}).some(function(v){return qty(cardId,v)>0})&&!Array.isArray(pokemonMap[cardId])});
-  var stillOwned=Object.keys(inv).some(function(cardId){
-   if(!Object.keys(inv[cardId]||{}).some(function(v){return qty(cardId,v)>0}))return false;
-   return (pokemonMap[cardId]||[]).some(function(n){return norm(n)===norm(name)});
-  });
-  if(!stillOwned&&!unknown)removePokemonFromCollection(name);
-  else if(unknown)status('Card removed, but a remaining card could not be checked online. Pokémon checklist left unchanged to avoid removing a Pokémon you still own.');
- });
-}
-$("tcgGrid").addEventListener("change",function(e){var sel=e.target.closest(".tcg-variant");if(!sel)return;var id=sel.dataset.id, card=cards.find(function(c){return c.id===id});if(!card)return;var next=sel.value;if(ownedVars(id).length>1){selV[id]=next;draw();return}var old=Object.keys(inv[id]||{}).find(function(v){return qty(id,v)>0});if(old&&old!==next){var n=qty(id,old);delete inv[id][old];inv[id][next]=(Number(inv[id][next])||0)+n;saveInv()}if(!old)selV[id]=next;draw()});
-$("tcgGrid").addEventListener("click",function(e){var w=e.target.closest("button[data-wanted]");if(w){var wid=w.dataset.wanted;wanted[wid]=!wanted[wid];if(!wanted[wid])delete wanted[wid];else{var wc=cards.find(function(c){return c.id===wid});if(wc)saveMeta(wc)}saveWanted();draw();return}var b=e.target.closest("button[data-delta]");if(!b)return;var id=b.dataset.id, card=cards.find(function(c){return c.id===id});if(!card)return;var article=b.closest(".tcg-card"),sel=article.querySelector(".tcg-variant"),v=sel.value,delta=Number(b.dataset.delta),names=cardPokemonNames(card);if(!pokemonMap[id]||!pokemonMap[id].length){pokemonMap[id]=names;savePokemonMap()}var n=qty(id,v)+delta;saveMeta(card);saveQty(id,v,n);if(delta>0){var caught=syncPokemonCollection(card);if(caught.length){status('Added to your Pokémon collection: '+caught.join(', ')+'.');}}else if(delta<0&&names.length&&!owned(id)){maybeUncatchPokemon(names);status('Removed the last copy of this card. A Pokémon is unchecked only if this site checked it for you and no other owned card features it.');}});
-/* ===== Import / Export (JSON) — Card Collection ===== */
-var TX={
-exp:["⬇ Export collection","⬇ Koleksiyonu dışa aktar"],
-tpl:["📄 Empty template","📄 Boş şablon"],
-sheet:["📋 Export loaded cards","📋 Listelenen kartları dışa aktar"],
-imp:["⬆ Import JSON","⬆ JSON içe aktar"],
-hint:["Export to a JSON file, edit or fill it in, then import it back. Card IDs and variant names (Holofoil, Reverse Holofoil, 1st Edition…) follow the Pokémon TCG API, so everything stays in sync.","JSON olarak dışa aktar, dosyayı düzenle ya da doldur, sonra geri içe aktar. Kart ID’leri ve varyant adları (Holofoil, Reverse Holofoil, 1st Edition…) Pokémon TCG API ile aynıdır; böylece her şey senkron kalır."],
-exported:["Exported {n} cards.","{n} kart dışa aktarıldı."],
-tpl_done:["Empty template downloaded.","Boş şablon indirildi."],
-empty_exp:["Your collection is empty — downloaded the empty template instead.","Koleksiyonun boş — onun yerine boş şablon indirildi."],
-sheet_done:["Exported {n} cards. Edit the numbers, then import.","{n} kart dışa aktarıldı. Sayıları düzenleyip içe aktar."],
-dlfail:["Download failed.","İndirme başarısız."],
-big:["File is too large (max 6 MB).","Dosya çok büyük (en fazla 6 MB)."],
-readfail:["That file couldn’t be read as JSON: {m}","Bu dosya JSON olarak okunamadı: {m}"],
-noent:["No cards found in this file. Use an exported file or the empty template.","Bu dosyada kart bulunamadı. Dışa aktarılmış bir dosya ya da boş şablon kullan."],
-check:["Checking cards with the Pokémon TCG API… {a}/{b}","Kartlar Pokémon TCG API ile kontrol ediliyor… {a}/{b}"],
-s_file:["{c} cards · {q} copies · {w} wanted in the file","Dosyada {c} kart · {q} adet · {w} aranan"],
-s_new:["{n} cards are new to your collection","{n} kart koleksiyonunda yok (yeni)"],
-s_ver:["{n} verified online","{n} kart çevrimiçi doğrulandı"],
-s_unv:["{n} couldn’t be verified online — kept as listed and verified when you open their set","{n} kart çevrimiçi doğrulanamadı — dosyadaki bilgiyle alınır, setini açınca doğrulanır"],
-s_nf:["{n} not found in the API — skipped","{n} kart API’de bulunamadı — atlandı"],
-s_bad:["{n} invalid rows ignored","{n} geçersiz satır yok sayıldı"],
-s_man:["{n} hand-added cards (no online check)","{n} elle eklenmiş kart (çevrimiçi kontrol yok)"],
-mq:["How should this file be applied?","Dosya nasıl uygulansın?"],
-m_upd:["Update","Güncelle"],
-m_upd_d:["Cards/variants in the file overwrite yours (0 removes). Everything else stays.","Dosyadaki kart/varyantlar seninkinin üzerine yazar (0 = sil). Gerisi kalır."],
-m_add:["Add","Ekle"],
-m_add_d:["Copies in the file are added to what you already have.","Dosyadaki adetler mevcut adetlerine eklenir."],
-m_rep:["Replace all","Hepsini değiştir"],
-m_rep_d:["Your collection becomes exactly this file.","Koleksiyonun birebir bu dosya olur."],
-sure:["Sure? Tap again","Emin misin? Tekrar dokun"],
-cancel:["Cancel","Vazgeç"],
-close:["Close","Kapat"],
-done:["Imported {c} cards ({q} copies).","{c} kart içe aktarıldı ({q} adet)."],
-done_mon:["Pokémon checked automatically: {n}","Otomatik işaretlenen Pokémon: {n}"],
-skipdl:["⬇ Download skipped cards","⬇ Atlanan kartları indir"],
-more:["+{n} more","+{n} tane daha"],
-det:["Details ({n})","Ayrıntılar ({n})"],
-nostore:["Not enough browser storage — nothing was changed.","Tarayıcı depolaması yetmedi — hiçbir şey değişmedi."],
-w_qty:["{id}: quantity “{v}” is not valid — ignored","{id}: “{v}” geçerli bir adet değil — yok sayıldı"],
-w_cap:["{id}: quantity capped at 9999","{id}: adet 9999 ile sınırlandı"],
-w_dup:["{id} appears more than once — quantities were combined","{id} birden fazla kez geçiyor — adetler toplandı"],
-w_row:["Row {n}: no card ID (use \"id\", or \"setId\" + \"number\")","Satır {n}: kart ID’si yok (\"id\" ya da \"setId\" + \"number\" kullan)"],
-w_id:["Row {n}: “{v}” doesn’t look like a card ID (e.g. base1-4)","Satır {n}: “{v}” kart ID’sine benzemiyor (örn. base1-4)"],
-w_nf:["{id}: not found in the Pokémon TCG API","{id}: Pokémon TCG API’de bulunamadı"],
-w_custom:["Custom variant names kept as typed: {v}","Özel varyant adları yazıldığı gibi alındı: {v}"],
-h_what:["Pokémon TCG card collection — fill in \"cards\", then use Import. Keys starting with _ are ignored.","Pokémon TCG kart koleksiyonu — \"cards\" listesini doldur, sonra İçe aktar’ı kullan. _ ile başlayan alanlar yok sayılır."],
-h_s1:["One object per card. ID = <set id>-<card number> as used by api.pokemontcg.io (e.g. base1-4). Or give \"setId\" + \"number\" instead of \"id\".","Her kart için bir nesne. ID = <set id>-<kart numarası> (api.pokemontcg.io ile aynı, örn. base1-4). \"id\" yerine \"setId\" + \"number\" da yazabilirsin."],
-h_s2:["\"variants\" = { variant name: number of copies }. A card can have several variants. 0 removes that variant.","\"variants\" = { varyant adı: adet }. Bir kartın birden çok varyantı olabilir. 0 = o varyantı sil."],
-h_s3:["\"wanted\": true puts the card on your Wanted list; false removes it; leave it out to keep it unchanged.","\"wanted\": true kartı Aranan listesine ekler; false çıkarır; yazmazsan değişmez."],
-h_s4:["name / set / number / rarity / pokedex are optional notes. They are only used when the API can’t be reached or for hand-added cards (manual-…).","name / set / number / rarity / pokedex isteğe bağlı notlardır. Yalnızca API’ye ulaşılamazsa ya da elle eklenen (manual-…) kartlar için kullanılır."],
-h_s5:["On import you choose: Update (file overwrites matching cards), Add (copies are added) or Replace all.","İçe aktarırken seçersin: Güncelle (dosya eşleşen kartların üzerine yazar), Ekle (adetler toplanır) ya da Hepsini değiştir."],
-h_alias:["Common spellings are understood and normalized: holo, reverse holo, 1st edition, 1st ed holo, unlimited, poke ball, master ball … Any other text is kept as a custom variant.","Yaygın yazımlar anlaşılır ve düzeltilir: holo, reverse holo, 1st edition, 1st ed holo, unlimited, poke ball, master ball … Başka bir yazı özel varyant olarak olduğu gibi tutulur."]
-};
-Object.keys(TX).forEach(function(k){I.en["tx_"+k]=TX[k][0];I.tr["tx_"+k]=TX[k][1]});
-function ioT(k,a){return t("tx_"+k,a)}
-var IO_MAX=6*1024*1024,QMAX=9999,BATCH=40,FMT="pokecollect-tcg",SEL="id,name,number,rarity,images,set,nationalPokedexNumbers,tcgplayer";
-var ID_RE=/^[a-z0-9]+-[A-Za-z0-9_.\-]+$/,ioTok=0,ioBusy=false,ioState=null;
-function sleep(ms){return new Promise(function(r){setTimeout(r,ms)})}
-function isManual(id){return /^manual-/i.test(id)}
-function normId(s){s=String(s==null?"":s).trim().replace(/\s+/g,"");var i=s.indexOf("-");if(i>0)s=s.slice(0,i).toLowerCase()+s.slice(i);return s}
-function nkey(s){return norm(s).replace(/[^a-z0-9]/g,"")}
-/* variant names: spelling -> label used by variants() (TCGplayer keys: normal, holofoil, reverseHolofoil, 1stEditionHolofoil, 1stEditionNormal, unlimited*) */
-var VMAP={};
-[["Normal","normal nonholo nonholofoil nonfoil regular standard"],
-["Holofoil","holofoil holo foil holographic"],
-["Reverse Holofoil","reverseholofoil reverseholo reverse reversefoil revholo rev rh reverseh"],
-["1st Edition Holofoil","1steditionholofoil 1steditionholo 1stholofoil 1stholo 1stedholofoil 1stedholo firsteditionholofoil firsteditionholo firstholo 1steditionfoil 1stedfoil"],
-["@1ST","1stedition 1steditionnormal 1steditionnonholo firstedition firsteditionnormal 1sted 1stednormal 1st first 1ed"],
-["Unlimited Holofoil","unlimitedholofoil unlimitedholo unlimitedfoil"],
-["@UNL","unlimited unlimitednormal unlimitednonholo"],
-["Poké Ball Pattern","pokeball pokeballpattern pokeballreverse pokeballreverseholo pokeballreverseholofoil pokeballholo"],
-["Master Ball Pattern","masterball masterballpattern masterballreverse masterballreverseholo masterballreverseholofoil masterballholo"]
-].forEach(function(r){r[1].split(" ").forEach(function(k){VMAP[k]=r[0]})});
-function canonVariant(raw){
- var s=String(raw==null?"":raw).replace(/[\u0000-\u001f<>]/g,"").replace(/\s+/g," ").trim();
- if(!s)return null;
- var k=nkey(s);if(VMAP[k])return{label:VMAP[k],custom:false};
- if(/^(?:__proto__|prototype|constructor)$/i.test(s))return null;
- s=s.slice(0,40);if(s===s.toLowerCase())s=s.replace(/(^|\s)(\S)/g,function(m,a,b){return a+b.toUpperCase()});
- return{label:s,custom:true};
-}
-function fitVariant(label,card){
- if(label!=="@1ST"&&label!=="@UNL")return label;
- var vl=card?variants(card):[],has1=function(x){return vl.indexOf(x)>=0};
- if(label==="@1ST")return has1("1st Edition Normal")?"1st Edition Normal":has1("1st Edition")?"1st Edition":has1("1st Edition Holofoil")?"1st Edition Holofoil":"1st Edition Normal";
- return has1("Unlimited")?"Unlimited":has1("Unlimited Normal")?"Unlimited Normal":has1("Unlimited Holofoil")?"Unlimited Holofoil":"Unlimited";
-}
-function safeJ(s){try{return JSON.parse(s)||{}}catch(e){return{}}}
-function fromMaps(iv,w,m){
- var ids={};Object.keys(iv||{}).forEach(function(k){ids[k]=1});Object.keys(w||{}).forEach(function(k){if(w[k])ids[k]=1});
- return Object.keys(ids).map(function(id){var x=(m&&m[id])||{};return{id:id,variants:iv[id]||{},wanted:w&&w[id]?true:undefined,name:x.n,set:x.s,number:x.no,rarity:x.r,pokedex:x.p}});
-}
-function boolOf(x){if(x===true||x===1)return true;if(x===false||x===0)return false;if(typeof x==="string"){var s=x.trim().toLowerCase();if(/^(true|yes|evet|1|y)$/.test(s))return true;if(/^(false|no|hayir|hayır|0|n)$/.test(s))return false}return undefined}
-function ioParse(raw){
- var out={entries:[],warns:[],bad:0,custom:{}},list=null;
- if(Array.isArray(raw))list=raw;
- else if(raw&&typeof raw==="object"){
-  if(Array.isArray(raw.cards))list=raw.cards;
-  else if(raw.x&&typeof raw.x==="object"&&typeof raw.x[STORE]==="string")list=fromMaps(safeJ(raw.x[STORE]),safeJ(raw.x[STORE+"-wanted"]),safeJ(raw.x[STORE+"-meta"]));
-  else{var ks=Object.keys(raw);if(ks.length&&ks.every(function(k){return ID_RE.test(k)&&raw[k]&&typeof raw[k]==="object"&&!Array.isArray(raw[k])}))list=fromMaps(raw,{},{})}
- }
- if(!list)return out;
- list.forEach(function(e,i){
-  if(!e||typeof e!=="object"||Array.isArray(e)){out.bad++;return}
-  var id=e.id;
-  if(!id){var sid=e.setId||e.setid||e.set_id;if(sid&&e.number!=null&&String(e.number).trim()!=="")id=String(sid).trim()+"-"+String(e.number).trim()}
-  if(!id){out.bad++;out.warns.push(ioT("w_row",{n:i+1}));return}
-  id=normId(id);
-  if(!ID_RE.test(id)){out.bad++;out.warns.push(ioT("w_id",{n:i+1,v:id.slice(0,40)}));return}
-  var vs={};
-  function add(lab,q){
-   var c=canonVariant(lab);if(!c)return;
-   var n;if(q===true)n=1;else if(q===false)n=0;else{n=Number(q);if(q===""||q===null||!isFinite(n)||n<0){out.warns.push(ioT("w_qty",{id:id,v:String(q).slice(0,20)}));return}n=Math.floor(n)}
-   if(n>QMAX){n=QMAX;out.warns.push(ioT("w_cap",{id:id}))}
-   if(c.custom)out.custom[c.label]=1;
-   vs[c.label]=Math.min(QMAX,(vs[c.label]||0)+n);
-  }
-  var v=e.variants;
-  if(v&&typeof v==="object"&&!Array.isArray(v))Object.keys(v).forEach(function(k){add(k,v[k])});
-  else if(Array.isArray(v))v.forEach(function(x){if(typeof x==="string")add(x,1);else if(x&&typeof x==="object"){var q=x.qty!=null?x.qty:x.quantity!=null?x.quantity:x.count!=null?x.count:1;add(x.variant||x.name||x.type,q)}});
-  else{
-   var q0=e.qty!=null?e.qty:e.quantity!=null?e.quantity:e.count!=null?e.count:e.copies;
-   if(e.variant){add(e.variant,q0!=null?q0:1)}else if(q0!=null)add("Normal",q0);
-  }
-  var pd=e.pokedex||e.nationalPokedexNumbers||e.p;
-  out.entries.push({id:id,variants:vs,wanted:boolOf(e.wanted),info:{name:String(e.name||e.n||"").slice(0,80),set:String(e.set||e.s||"").slice(0,80),number:String(e.number!=null?e.number:(e.no||"")).slice(0,20),rarity:String(e.rarity||e.r||"").slice(0,40),pokedex:Array.isArray(pd)?pd.map(Number).filter(function(n){return n>0&&n<20000}).slice(0,2):[]}});
- });
- return out;
-}
-function note404(e){return e&&/\(404\)/.test(String(e.message))}
-async function resolveCards(ids,my,progress){
- var map={},failed={},notFound={},okReq=0,done=0,reqs=0;
- function take(c){if(c&&c.id)map[String(c.id).toLowerCase()]=c}
- async function batch(arr){
-  for(var i=0;i<arr.length;i+=BATCH){
-   if(my!==ioTok)return;
-   var chunk=arr.slice(i,i+BATCH),q="("+chunk.map(function(id){return'id:"'+id+'"'}).join(" OR ")+")";
-   try{var d=await api(API+"/cards?q="+encodeURIComponent(q)+"&pageSize=250&select="+SEL);okReq++;(d.data||[]).forEach(take)}
-   catch(e){chunk.forEach(function(id){failed[id.toLowerCase()]=1})}
-   done+=chunk.length;progress(Math.min(done,ids.length));
-   if(i+BATCH<arr.length)await sleep(reqs++>=4?2100:250);
-  }
- }
- await batch(ids);
- if(my!==ioTok)return null;
- var miss=ids.filter(function(id){var l=id.toLowerCase();return!map[l]&&!failed[l]});
- /* second chance: zero-padded numbers (base1-004 -> base1-4) */
- var alt={},altIds=[];
- miss.forEach(function(id){var m=/^(.+-)0+(\d+)$/.exec(id);if(m){var a=m[1]+m[2];alt[id.toLowerCase()]=a;altIds.push(a)}});
- if(altIds.length){await sleep(300);await batch(altIds);
-  Object.keys(alt).forEach(function(k){var c=map[alt[k].toLowerCase()];if(c)map[k]=c})}
- miss=miss.filter(function(id){return!map[id.toLowerCase()]});
- var broken=okReq>0&&Object.keys(map).length===0,found=0,lim=12;
- for(var i=0;i<miss.length;i++){
-  var l=miss[i].toLowerCase();
-  if(i<lim){
-   if(my!==ioTok)return null;
-   await sleep(2100);
-   try{var d=await api(API+"/cards/"+encodeURIComponent(miss[i])+"?select="+SEL);if(d&&d.data){take(d.data);map[l]=d.data;found++}else notFound[l]=1}
-   catch(e){if(note404(e))notFound[l]=1;else failed[l]=1}
-  }else{if(broken&&found>0)failed[l]=1;else notFound[l]=1}
- }
- return{map:map,failed:failed,notFound:notFound,okReq:okReq};
-}
-function namesOfId(id){
- if(Array.isArray(pokemonMap[id]))return pokemonMap[id];
- var m=META[id];return m&&Array.isArray(m.p)?m.p.map(function(n){return DBM[Number(n)]&&DBM[Number(n)][1]}).filter(Boolean):[];
-}
-function metaFromCard(c){return{n:c.name,no:c.number||"",r:c.rarity||"",s:(c.set&&c.set.name)||"",i:(c.images&&(c.images.small||c.images.large))||"",p:Array.isArray(c.nationalPokedexNumbers)?c.nationalPokedexNumbers.slice(0,2):[]}}
-function metaFromInfo(id,inf,unver){
- var pt=isManual(id)?-1:id.indexOf("-");
- var m={n:inf.name||id,no:inf.number||(pt>0?id.slice(pt+1):""),r:inf.rarity||"",s:inf.set||(pt>0?id.slice(0,pt):""),i:"",p:inf.pokedex||[]};
- if(unver)m.u=1;return m;
-}
-function ioBuild(parsed,res,skipped){
- var items={},order=[],ver=0,unv=0,man=0,dupWarn={},warns=parsed.warns.slice();
- parsed.entries.forEach(function(e){
-  var l=e.id.toLowerCase(),card=res.map[l]||null,rid=e.id,status;
-  if(isManual(e.id))status="manual";
-  else if(card){rid=card.id;status="ok"}
-  else if(res.notFound[l]){skipped.push(e);warns.push(ioT("w_nf",{id:e.id}));return}
-  else status="unverified";
-  var key=rid.toLowerCase(),it=items[key];
-  if(!it){it=items[key]={id:rid,variants:{},wanted:undefined,card:card,status:status,info:e.info};order.push(key)}
-  else if(!dupWarn[key]){dupWarn[key]=1;warns.push(ioT("w_dup",{id:rid}))}
-  Object.keys(e.variants).forEach(function(lab){var v=fitVariant(lab,card);it.variants[v]=Math.min(QMAX,(it.variants[v]||0)+e.variants[lab])});
-  if(e.wanted===true)it.wanted=true;else if(e.wanted===false&&it.wanted!==true)it.wanted=false;
-  if(!it.info.name&&e.info.name)it.info=e.info;
- });
- var list=order.map(function(k){return items[k]}),copies=0,wn=0,nw=0;
- list.forEach(function(it){
-  if(it.status==="ok")ver++;else if(it.status==="manual")man++;else unv++;
-  var q=0;Object.keys(it.variants).forEach(function(v){q+=it.variants[v]});copies+=q;
-  if(it.wanted===true)wn++;if(q>0&&!owned(it.id))nw++;
- });
- return{items:list,ver:ver,unv:unv,man:man,copies:copies,wanted:wn,fresh:nw,warns:warns,skipped:skipped,bad:parsed.bad,custom:Object.keys(parsed.custom)};
-}
-/* ---- state snapshot (undo) ---- */
-function takeSnap(){return{inv:JSON.stringify(inv),wanted:JSON.stringify(wanted),meta:JSON.stringify(META),pm:JSON.stringify(pokemonMap),auto:JSON.stringify(auto),main:snap()}}
-function restoreSnap(s){
- inv=JSON.parse(s.inv);wanted=JSON.parse(s.wanted);META=JSON.parse(s.meta);pokemonMap=JSON.parse(s.pm);auto=JSON.parse(s.auto);
- saveInv();saveWanted();persistMeta();savePokemonMap();saveAuto();undoTo(s.main);
- try{drawDex()}catch(e){}draw();
-}
-function putLS(k,o){try{localStorage.setItem(k,JSON.stringify(o));return true}catch(e){return false}}
-function syncPokemonBatch(list){
- var changed=[];
- list.forEach(function(card){
-  var names=cardPokemonNames(card);if(card&&card.id)pokemonMap[card.id]=names;
-  names.forEach(function(name){
-   if(!has(name)){var entry=DB.find(function(x){return x[1]===name});if(entry){var f=findRow(entry[0]);if(f)putInRow(f.row,name);else R[NS].push([name])}}
-   if(!have[name]){have[name]=true;auto[name]=true;changed.push(name)}
-  });
- });
- savePokemonMap();
- if(changed.length){saveAuto();save();render();try{drawDex()}catch(e){}}
- return changed;
-}
-function ioApply(mode){
- var st=ioState;if(!st||ioBusy||!st.plan)return;
- var plan=st.plan,before=takeSnap(),prevOwned=Object.keys(inv).filter(owned);
- var nInv=mode==="replace"?{}:JSON.parse(JSON.stringify(inv)),nW=mode==="replace"?{}:Object.assign({},wanted),nMeta=Object.assign({},META),sync=[];
- plan.items.forEach(function(it){
-  var cur=nInv[it.id]||{};
-  Object.keys(it.variants).forEach(function(v){var q=it.variants[v],nv=Math.min(QMAX,mode==="add"?(Number(cur[v])||0)+q:q);if(nv>0)cur[v]=nv;else delete cur[v]});
-  if(Object.keys(cur).length)nInv[it.id]=cur;else delete nInv[it.id];
-  if(it.wanted===true)nW[it.id]=true;else if(it.wanted===false)delete nW[it.id];
-  var touched=Object.keys(it.variants).length>0||it.wanted===true;
-  if(touched||nInv[it.id]){
-   if(it.card)nMeta[it.id]=metaFromCard(it.card);
-   else if(!nMeta[it.id]||nMeta[it.id].u||(it.status==="manual"&&it.info.name))nMeta[it.id]=metaFromInfo(it.id,it.info,it.status==="unverified");
-  }
-  if(nInv[it.id])sync.push(it.card||{id:it.id,name:it.info.name||"",nationalPokedexNumbers:it.info.pokedex||[]});
- });
- if(!(putLS(STORE,nInv)&&putLS(STORE+"-wanted",nW)&&putLS(STORE+"-meta",nMeta))){
-  putLS(STORE,inv);putLS(STORE+"-wanted",wanted);putLS(STORE+"-meta",META);
-  ioShow('<div class="io-err">'+esc(ioT("nostore"))+'</div><div class="io-act"><button type="button" data-io="close">'+esc(ioT("close"))+'</button></div>');return;
- }
- inv=nInv;wanted=nW;META=nMeta;
- var caught=syncPokemonBatch(sync);
- var lost=prevOwned.filter(function(id){return!owned(id)}),lostNames=[];
- lost.forEach(function(id){namesOfId(id).forEach(function(n){if(lostNames.indexOf(n)<0)lostNames.push(n)})});
- if(lostNames.length){try{maybeUncatchPokemon(lostNames)}catch(e){}}
- draw();
- var html='<div class="io-ok">✓ '+esc(ioT("done",{c:plan.items.length,q:plan.copies}))+'</div>';
- if(caught.length)html+='<div class="io-s">'+esc(ioT("done_mon",{n:caught.length}))+': '+esc(caught.slice(0,12).join(", "))+(caught.length>12?" …":"")+'</div>';
- html+=ioProblems(plan)+'<div class="io-act"><button type="button" data-io="close">'+esc(ioT("close"))+'</button></div>';
- ioShow(html);ioState=null;
- toast(ioT("done",{c:plan.items.length,q:plan.copies}),function(){restoreSnap(before)});
-}
-function ioProblems(p){
- var lines=[];
- if(p.custom.length)lines.push(ioT("w_custom",{v:p.custom.slice(0,8).join(", ")}));
- var all=lines.concat(p.warns),shownL=all.slice(0,30),h="";
- if(p.skipped.length)h+='<div class="io-act"><button type="button" data-io="skipdl">'+esc(ioT("skipdl"))+'</button></div>';
- if(all.length)h+='<details class="io-det"><summary>'+esc(ioT("det",{n:all.length}))+'</summary><ul>'+shownL.map(function(x){return'<li>'+esc(x)+'</li>'}).join("")+(all.length>30?'<li>'+esc(ioT("more",{n:all.length-30}))+'</li>':'')+'</ul></details>';
- return h;
-}
-function ioShow(html){var b=$("tcgIoBox");b.innerHTML=html;b.hidden=!html}
-function ioPreview(name){
- var p=ioState.plan,li=[];
- li.push(ioT("s_file",{c:p.items.length,q:p.copies,w:p.wanted}));
- li.push(ioT("s_new",{n:p.fresh}));
- if(p.ver)li.push(ioT("s_ver",{n:p.ver}));
- if(p.man)li.push(ioT("s_man",{n:p.man}));
- if(p.unv)li.push(ioT("s_unv",{n:p.unv}));
- if(p.skipped.length)li.push(ioT("s_nf",{n:p.skipped.length}));
- if(p.bad)li.push(ioT("s_bad",{n:p.bad}));
- var h='<div class="io-h">📥 <b>'+esc(name)+'</b></div><ul class="io-l">'+li.map(function(x){return'<li>'+esc(x)+'</li>'}).join("")+'</ul>';
- h+='<div class="io-q">'+esc(ioT("mq"))+'</div><div class="io-modes">';
- [["update","m_upd"],["add","m_add"],["replace","m_rep"]].forEach(function(m){h+='<button type="button" data-io="'+m[0]+'"'+(m[0]==="replace"?' class="dan"':'')+'><b>'+esc(ioT(m[1]))+'</b><small>'+esc(ioT(m[1]+"_d"))+'</small></button>'});
- h+='</div><div class="io-act"><button type="button" data-io="cancel">'+esc(ioT("cancel"))+'</button></div>'+ioProblems(p);
- ioShow(h);
-}
-function ioBusyOn(on){ioBusy=on;["tcgExpAll","tcgExpTpl","tcgExpSet","tcgImp"].forEach(function(i){var b=$(i);if(b)b.disabled=on})}
-async function ioRun(file){
- if(!file)return;
- if(file.size>IO_MAX){ioShow('<div class="io-err">'+esc(ioT("big"))+'</div>');return}
- var text;try{text=await new Promise(function(res,rej){var fr=new FileReader();fr.onload=function(){res(String(fr.result))};fr.onerror=function(){rej(fr.error)};fr.readAsText(file)})}catch(e){ioShow('<div class="io-err">'+esc(ioT("readfail",{m:String(e&&e.message||e)}))+'</div>');return}
- var raw;try{raw=JSON.parse(text.replace(/^\uFEFF/,""))}catch(e){ioShow('<div class="io-err">'+esc(ioT("readfail",{m:String(e.message).slice(0,160)}))+'</div>');return}
- var parsed=ioParse(raw);
- if(!parsed.entries.length){ioShow('<div class="io-err">'+esc(ioT("noent"))+'</div>'+ioProblems({custom:[],warns:parsed.warns,skipped:[]}));return}
- var my=++ioTok;ioBusyOn(true);
- try{
-  var ids=[],seen={};parsed.entries.forEach(function(e){var l=e.id.toLowerCase();if(!isManual(e.id)&&!seen[l]){seen[l]=1;ids.push(e.id)}});
-  var res={map:{},failed:{},notFound:{},okReq:0};
-  if(ids.length){
-   ioShow('<div class="io-s" id="ioProg">'+esc(ioT("check",{a:0,b:ids.length}))+'</div><div class="io-act"><button type="button" data-io="cancel">'+esc(ioT("cancel"))+'</button></div>');
-   res=await resolveCards(ids,my,function(n){var e=$("ioProg");if(e)e.textContent=ioT("check",{a:n,b:ids.length})});
-   if(!res||my!==ioTok)return;
-  }
-  var skipped=[],plan=ioBuild(parsed,res,skipped);
-  if(!plan.items.length){ioShow('<div class="io-err">'+esc(ioT("noent"))+'</div>'+ioProblems(plan));return}
-  ioState={plan:plan};ioPreview(file.name||"JSON");
- }catch(e){ioShow('<div class="io-err">'+esc(ioT("readfail",{m:String(e&&e.message||e).slice(0,160)}))+'</div>')}
- finally{if(my===ioTok)ioBusyOn(false)}
-}
-/* ---- export ---- */
-function ser(v){if(Array.isArray(v))return"["+v.map(ser).join(", ")+"]";if(v&&typeof v==="object")return"{"+Object.keys(v).map(function(k){return JSON.stringify(k)+": "+ser(v[k])}).join(", ")+"}";return JSON.stringify(v)}
-function fileText(head,cards,extra){
- var lines=Object.keys(head).map(function(k){return"  "+JSON.stringify(k)+": "+JSON.stringify(head[k])});
- var s="{\n"+lines.join(",\n")+",\n  \"cards\": ["+(cards.length?"\n"+cards.map(function(c){return"    "+ser(c)}).join(",\n")+"\n  ":"")+"]";
- Object.keys(extra||{}).forEach(function(k){s+=",\n  "+JSON.stringify(k)+": "+JSON.stringify(extra[k],null,2).replace(/\n/g,"\n  ")});
- return s+"\n}\n";
-}
-function dlFile(name,text){
- try{var a=document.createElement("a");a.href=URL.createObjectURL(new Blob([text],{type:"application/json"}));a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(a.href)},3000);return true}catch(e){toast(ioT("dlfail"));return false}
-}
-function idCmp(a,b){
- var ia=a.indexOf("-"),ib=b.indexOf("-"),sa=ia>0?a.slice(0,ia):a,sb=ib>0?b.slice(0,ib):b;
- if(sa!==sb)return sa<sb?-1:1;
- var na=ia>0?a.slice(ia+1):"",nb=ib>0?b.slice(ib+1):"",x=parseInt(na,10),y=parseInt(nb,10);
- if(!isNaN(x)&&!isNaN(y)&&x!==y)return x-y;return na<nb?-1:na>nb?1:0;
-}
-function head(){return{app:FMT,type:"card-collection",version:1,exportedAt:new Date().toISOString()}}
-function today(){return new Date().toISOString().slice(0,10)}
-function entryOf(id){
- var m=META[id]||{},vs={};Object.keys(inv[id]||{}).forEach(function(v){var q=qty(id,v);if(q>0)vs[v]=q});
- var e={id:id,variants:vs,wanted:!!wanted[id]};
- if(m.n)e.name=m.n;if(m.s)e.set=m.s;if(m.no)e.number=m.no;if(m.r)e.rarity=m.r;if(m.p&&m.p.length)e.pokedex=m.p;
- return e;
-}
-function helpObj(){return{
- what:ioT("h_what"),steps:[ioT("h_s1"),ioT("h_s2"),ioT("h_s3"),ioT("h_s4"),ioT("h_s5")],
- variant_names:["Normal","Holofoil","Reverse Holofoil","1st Edition Normal","1st Edition Holofoil","Unlimited","Unlimited Holofoil","Poké Ball Pattern","Master Ball Pattern"],
- aliases:ioT("h_alias")}}
-function exampleObj(){return[
- {id:"base1-4",variants:{"1st Edition Holofoil":1,"Unlimited Holofoil":1}},
- {setId:"sv3pt5",number:"25",variants:{"Normal":1,"Reverse Holofoil":2}},
- {id:"swsh4-25",wanted:true}]}
-function expAll(){
- var ids=Object.keys(inv).filter(owned),w=Object.keys(wanted).filter(function(k){return wanted[k]&&!owned(k)}),all=ids.concat(w).sort(idCmp);
- if(!all.length){expTpl();toast(ioT("empty_exp"));return}
- if(dlFile("pokemon-tcg-collection-"+today()+".json",fileText(head(),all.map(entryOf))))toast(ioT("exported",{n:all.length}));
-}
-function expTpl(){
- var h=head();delete h.exportedAt;
- if(dlFile("pokemon-tcg-template.json",fileText(h,[],{_help:helpObj(),_example:exampleObj()})))toast(ioT("tpl_done"));
-}
-function expSheet(){
- if(!cards.length){toast(ioT("sheet_done",{n:0}));return}
- var arr=cards.slice().sort(function(a,b){return idCmp(a.id,b.id)}).map(function(c){
-  var vs={};variants(c).forEach(function(v){vs[v]=0});Object.keys(inv[c.id]||{}).forEach(function(v){var q=qty(c.id,v);if(q>0)vs[v]=q});
-  var e={id:c.id,variants:vs,wanted:!!wanted[c.id],name:c.name};
-  if(c.set&&c.set.name)e.set=c.set.name;if(c.number)e.number=c.number;if(c.rarity)e.rarity=c.rarity;
-  if(Array.isArray(c.nationalPokedexNumbers)&&c.nationalPokedexNumbers.length)e.pokedex=c.nationalPokedexNumbers.slice(0,2);
-  return e});
- var nm=(activeSet||($("tcgSearch").value||"cards")).toString().replace(/[^A-Za-z0-9_-]+/g,"_").slice(0,30)||"cards";
- if(dlFile("pokemon-tcg-"+nm+"-sheet.json",fileText(head(),arr,{_help:helpObj()})))toast(ioT("sheet_done",{n:arr.length}));
-}
-function ioSync(){var b=$("tcgExpSet");if(b)b.hidden=!cards.length}
-function ioLabels(){
- [].forEach.call(document.querySelectorAll("[data-tx]"),function(e){e.textContent=ioT(e.dataset.tx)});
-}
-$("tcgExpAll").addEventListener("click",expAll);
-$("tcgExpTpl").addEventListener("click",expTpl);
-$("tcgExpSet").addEventListener("click",expSheet);
-$("tcgImp").addEventListener("click",function(){if(!ioBusy)$("tcgImpFile").click()});
-$("tcgImpFile").addEventListener("change",function(){var f=this.files[0],inp=this;ioRun(f).then(function(){inp.value=""},function(){inp.value=""})});
-$("tcgIoBox").addEventListener("click",function(e){
- var b=e.target.closest("[data-io]");if(!b)return;var k=b.dataset.io;
- if(k==="cancel"||k==="close"){ioTok++;ioState=null;ioBusyOn(false);ioShow("");return}
- if(k==="skipdl"){var sk=(ioState&&ioState.plan?ioState.plan.skipped:ioLastSkipped)||[];ioDlSkipped(sk);return}
- if(k==="replace"&&!b.dataset.a){b.dataset.a=1;var bb=b.querySelector("b");bb.textContent=ioT("sure");setTimeout(function(){if(b.isConnected){delete b.dataset.a;bb.textContent=ioT("m_rep")}},3000);return}
- if(k==="update"||k==="add"||k==="replace"){ioLastSkipped=ioState.plan.skipped;ioApply(k)}
-});
-var ioLastSkipped=[];
-function ioDlSkipped(sk){
- var arr=sk.map(function(e){var vs={};Object.keys(e.variants).forEach(function(l){vs[fitVariant(l,null)]=e.variants[l]});var o={id:e.id,variants:vs};if(e.wanted!==undefined)o.wanted=e.wanted;if(e.info.name)o.name=e.info.name;if(e.info.set)o.set=e.info.set;if(e.info.number)o.number=e.info.number;return o});
- dlFile("pokemon-tcg-skipped-"+today()+".json",fileText(head(),arr));
-}
-var _alIo=applyLang;applyLang=function(){_alIo();ioLabels()};
-ioLabels();ioSync();
-
-window.TCGX={inv:function(){return inv},wanted:function(){return wanted},meta:function(){return META},
- addManual:function(id,m,own){META[id]=m;persistMeta();if(own){inv[id]={Normal:1};saveInv();syncPokemonCollection({id:id,name:m.n,nationalPokedexNumbers:m.p})}else{wanted[id]=true;saveWanted()}}};
+(function(){"use strict";
+var CK="pokecollect-cards-v2",OK="pokecollect-tcg-inventory-v1",AK=OK+"-auto",cards=[],IMG={},idb=null,view="all",cur=null,queue=[],qi=0,tgt="new",warned=0,auto={};
+Object.assign(I.tr,{tabcc:"Kartlarım",cc_title:"Kartlarım",cc_sub:"Kartının fotoğrafını çek ya da galeriden seç, bilgilerini düzenle, kaydet.",cc_cam:"📷 Fotoğraf çek",cc_gal:"🖼 Galeriden ekle",cc_man:"✍ Fotoğrafsız ekle",cc_search:"Kartlarda ara…",cc_all:"Hepsi",cc_own:"Elimde",cc_want:"Aranan",cc_sum:"{c} kart · {q} adet · {w} aranan",cc_empty:"Henüz kart yok. Yukarıdan bir fotoğraf ekleyerek başla.",cc_nores:"Eşleşen kart yok.",cc_new:"Yeni kart",cc_edit:"Kartı düzenle",cc_name:"Kart adı",cc_mon:"Hangi Pokémon? (koleksiyonda otomatik işaretlenir)",cc_monph:"Pokémon adı yaz ve seç…",cc_set:"Set",cc_no:"Numara",cc_rar:"Nadirlik",cc_var:"Varyant",cc_status:"Durum",cc_sown:"Elimde",cc_swant:"Aranıyor",cc_qty:"Adet",cc_skip:"Atla",cc_savenext:"Kaydet ve sonraki",cc_sure:"Emin misin? Tekrar dokun",cc_needname:"Bir kart adı yaz ya da Pokémon seç.",cc_nomon:"Listede böyle bir Pokémon yok.",cc_saved:"Kaydedildi.",cc_added:"Koleksiyonda işaretlendi: {n}",cc_removed:"Koleksiyondan işaret kalktı: {n}",cc_photofail:"Fotoğraf okunamadı.",cc_nostore:"Fotoğraflar bu tarayıcıda kalıcı saklanamıyor (gizli mod olabilir).",cc_full:"Depolama dolu, kart kaydedilemedi.",cc_exp:"⬇ Yedekle",cc_imp:"⬆ Yükle",cc_hint:"Kartların ve fotoğrafların yalnızca bu cihazdaki tarayıcıda saklanır. Ara sıra yedek al.",cc_expd:"{n} kart yedeklendi.",cc_impd:"{n} kart yüklendi.",cc_impf:"Bu dosya okunamadı."});
+Object.assign(I.en,{tabcc:"My Cards",cc_title:"My Cards",cc_sub:"Take a photo of your card or pick one from the gallery, edit the details, save.",cc_cam:"📷 Take photo",cc_gal:"🖼 From gallery",cc_man:"✍ Add without photo",cc_search:"Search cards…",cc_all:"All",cc_own:"Owned",cc_want:"Wanted",cc_sum:"{c} cards · {q} copies · {w} wanted",cc_empty:"No cards yet. Start by adding a photo above.",cc_nores:"No matching cards.",cc_new:"New card",cc_edit:"Edit card",cc_name:"Card name",cc_mon:"Which Pokémon? (auto-marked in your collection)",cc_monph:"Type a Pokémon name and pick…",cc_set:"Set",cc_no:"Number",cc_rar:"Rarity",cc_var:"Variant",cc_status:"Status",cc_sown:"Owned",cc_swant:"Wanted",cc_qty:"Copies",cc_skip:"Skip",cc_savenext:"Save & next",cc_sure:"Sure? Tap again",cc_needname:"Enter a card name or pick a Pokémon.",cc_nomon:"No such Pokémon in the list.",cc_saved:"Saved.",cc_added:"Marked in your collection: {n}",cc_removed:"Unmarked in your collection: {n}",cc_photofail:"Couldn’t read that photo.",cc_nostore:"Photos can’t be stored permanently in this browser (private mode?).",cc_full:"Storage full — card not saved.",cc_exp:"⬇ Back up",cc_imp:"⬆ Restore",cc_hint:"Your cards and photos are stored only in this browser on this device. Back up now and then.",cc_expd:"Backed up {n} cards.",cc_impd:"Restored {n} cards.",cc_impf:"That file couldn’t be read."});
+XK.push(CK);
+try{auto=JSON.parse(localStorage.getItem(AK)||"{}")||{}}catch(e){}
+function sAuto(){try{localStorage.setItem(AK,JSON.stringify(auto))}catch(e){}}
+function sCards(){try{localStorage.setItem(CK,JSON.stringify(cards));return true}catch(e){toast(t("cc_full"));return false}}
+try{cards=JSON.parse(localStorage.getItem(CK)||"[]");if(!Array.isArray(cards))cards=[]}catch(e){cards=[]}
+if(!localStorage.getItem(CK)){try{var oi=JSON.parse(localStorage.getItem(OK)||"{}"),ow=JSON.parse(localStorage.getItem(OK+"-wanted")||"{}"),om=JSON.parse(localStorage.getItem(OK+"-meta")||"{}");
+Object.keys(Object.assign({},oi,ow)).forEach(function(id){var m=om[id]||{},vs=oi[id]||{},k=Object.keys(vs),q=k.reduce(function(a,x){return a+(+vs[x]||0)},0);cards.push({id:id,n:m.n||id,m:(m.p||[]).filter(function(d){return DBM[d]}).slice(0,2),s:m.s||"",no:m.no||"",r:m.r||"",v:k[0]||"Normal",q:q,o:q>0,u:m.i||""})});if(cards.length)sCards()}catch(e){}}
+try{var rq=indexedDB.open("pokecollect-photos",1);rq.onupgradeneeded=function(){rq.result.createObjectStore("p",{keyPath:"id"})};rq.onerror=function(){};
+rq.onsuccess=function(){idb=rq.result;var g=idb.transaction("p").objectStore("p").getAll();g.onsuccess=function(){g.result.forEach(function(r){IMG[r.id]=r.d});drawC();if(window.bndOpen&&document.body.classList.contains("pg-bnd"))window.bndOpen()}}}catch(e){}
+function idbW(id,d){if(!idb){if(!warned++)toast(t("cc_nostore"));return}try{var s=idb.transaction("p","readwrite").objectStore("p");d?s.put({id:id,d:d}):s.delete(id)}catch(e){}}
+function readPhoto(f){return new Promise(function(ok,no){var u=URL.createObjectURL(f),im=new Image();im.onload=function(){try{var w=im.naturalWidth,h=im.naturalHeight,s=Math.min(1,900/Math.max(w,h)),c=document.createElement("canvas");c.width=Math.round(w*s);c.height=Math.round(h*s);c.getContext("2d").drawImage(im,0,0,c.width,c.height);URL.revokeObjectURL(u);ok(c.toDataURL("image/jpeg",.85))}catch(e){no(e)}};im.onerror=function(){URL.revokeObjectURL(u);no(new Error("img"))};im.src=u})}
+function mn(c){return(c.m||[]).map(function(d){return DBM[d]&&DBM[d][1]}).filter(Boolean)}
+function sync(list){var add=[],rm=[],ch=0;list.filter(function(n,i){return list.indexOf(n)===i}).forEach(function(n){var own=cards.some(function(c){return c.o&&mn(c).indexOf(n)>=0}),d=NID[norm(n)];
+if(own){if(!has(n)&&d){var f=findRow(d);if(f)putInRow(f.row,n);else R[NS].push([n]);ch=1}if(!have[n]){have[n]=true;auto[n]=true;add.push(n);ch=1}}
+else if(auto[n]){if(have[n]){delete have[n];rm.push(n);ch=1}delete auto[n]}});
+sAuto();if(ch){save();render();drawDex()}
+if(add.length)toast(t("cc_added",{n:add.join(", ")}));else if(rm.length)toast(t("cc_removed",{n:rm.join(", ")}))}
+function cardH(c){var im=IMG[c.id]||c.u||"",sp=mn(c).map(function(n){var d=NID[norm(n)];return SPR[d]?'<img alt="" src="'+SPR[d]+'">':""}).join("");
+return'<button class="cc-card'+(c.o?"":" want")+'" type="button" data-id="'+esc(c.id)+'"><div class="cc-ph">'+(im?'<img alt="" loading="lazy" src="'+esc(im)+'">':'<i class="ball"></i>')+(c.o&&c.q>1?'<span class="cc-q">×'+c.q+'</span>':"")+(c.o?"":'<span class="cc-w">★</span>')+'</div><div class="cc-nm">'+esc(c.n)+'</div><div class="cc-mt">'+sp+'<span>'+esc([c.s,c.no?"#"+c.no:"",c.v&&c.v!=="Normal"?c.v:""].filter(Boolean).join(" · "))+'</span></div></button>'}
+function drawC(){var q=norm($("ccsq").value),n=0,w=0;cards.forEach(function(c){if(c.o)n+=c.q;else w++});$("ccsum").textContent=t("cc_sum",{c:cards.length,q:n,w:w});
+var l=cards.filter(function(c){return(view==="all"||(view==="own")===!!c.o)&&(!q||norm([c.n,mn(c).join(" "),c.s,c.no,c.r,c.v].join(" ")).indexOf(q)>=0)}).reverse();
+$("ccgrid").innerHTML=l.length?l.map(cardH).join(""):'<p class="cc-em">'+t(cards.length?"cc_nores":"cc_empty")+'</p>'}
+function newC(){return{id:"c"+Date.now().toString(36)+Math.random().toString(36).slice(2,5),n:"",m:[],s:"",no:"",r:"",v:"Normal",q:1,o:true}}
+var dl=0;
+function openEd(c,photo,isNew,i,total){if(!dl){dl=1;$("ccdl").innerHTML=DB.map(function(x){return'<option value="'+esc(x[1])+'">'}).join("")}
+cur={c:c,photo:photo||null,isNew:isNew,prev:isNew?[]:mn(c),i:i||0,total:total||0};var qm=cur.total>1;
+$("ccdt").textContent=t(isNew?"cc_new":"cc_edit")+(qm?" · "+(cur.i+1)+" / "+cur.total:"");
+$("ccn").value=c.n;$("ccs").value=c.s;$("ccno").value=c.no;$("ccr").value=c.r;$("ccv").value=c.v;$("ccmi").value="";$("ccmsg").textContent="";
+chips();pv();stat();$("ccsv").textContent=t(qm&&cur.i<cur.total-1?"cc_savenext":"save");$("ccsk").style.display=qm?"":"none";
+var d=$("ccdel");d.style.display=isNew?"none":"";d.textContent=t("del");delete d.dataset.a;$("ccd").classList.add("open")}
+function pv(){var s=cur.photo||IMG[cur.c.id]||cur.c.u;$("ccpv").innerHTML=s?'<img alt="" src="'+esc(s)+'">':'<div class="cc-np"><i class="ball"></i></div>'}
+function chips(){$("ccm").innerHTML=cur.c.m.map(function(d){var s=SPR[d];return'<span class="cc-chip">'+(s?'<img alt="" src="'+s+'">':"")+esc(DBM[d][1])+'<button type="button" data-rm="'+d+'" aria-label="✕">✕</button></span>'}).join("")}
+function stat(){var o=cur.c.o;[].forEach.call($("ccst").children,function(b){b.classList.toggle("on",(b.dataset.s==="own")===o)});$("ccqw").style.display=o?"":"none";$("ccqn").textContent=cur.c.q}
+function addMon(){var i=$("ccmi"),v=i.value.trim(),d=Number(NID[norm(v)]);if(!v)return;if(!d||!DBM[d]){$("ccmsg").textContent=t("cc_nomon");return}$("ccmsg").textContent="";
+if(cur.c.m.indexOf(d)<0&&cur.c.m.length<3){cur.c.m.push(d);if(!$("ccn").value.trim())$("ccn").value=DBM[d][1]}i.value="";chips()}
+function closeEd(){queue=[];cur=null;$("ccd").classList.remove("open")}
+function nextEd(){if(queue.length&&qi<queue.length-1){qi++;openEd(newC(),queue[qi],true,qi,queue.length)}else closeEd()}
+function saveEd(){var c=cur.c;c.n=$("ccn").value.trim();if(!c.n&&c.m.length)c.n=DBM[c.m[0]][1];if(!c.n){$("ccmsg").textContent=t("cc_needname");return false}
+c.s=$("ccs").value.trim();c.no=$("ccno").value.trim();c.r=$("ccr").value.trim();c.v=$("ccv").value.trim()||"Normal";c.q=c.o?Math.max(1,c.q):0;
+if(cur.photo){IMG[c.id]=cur.photo;idbW(c.id,cur.photo);c.u=""}
+var i=cards.findIndex(function(x){return x.id===c.id});if(i<0)cards.push(c);else cards[i]=c;sCards();sync(cur.prev.concat(mn(c)));drawC();return true}
+function onFiles(fl){var a=[].slice.call(fl||[]).filter(function(f){return!f.type||/^image\//.test(f.type)});if(!a.length)return;
+if(tgt==="edit"&&cur){readPhoto(a[0]).then(function(d){cur.photo=d;pv()},function(){toast(t("cc_photofail"))});return}
+Promise.all(a.map(function(f){return readPhoto(f).catch(function(){return null})})).then(function(ds){ds=ds.filter(Boolean);if(!ds.length){toast(t("cc_photofail"));return}queue=ds;qi=0;openEd(newC(),ds[0],true,0,ds.length)})}
+function pick(i,w){tgt=w;i.value="";i.click()}
+$("cccam").onclick=function(){pick($("ccf1"),"new")};$("ccgal").onclick=function(){pick($("ccf2"),"new")};
+$("ccecam").onclick=function(){pick($("ccf1"),"edit")};$("ccegal").onclick=function(){pick($("ccf2"),"edit")};
+$("ccman").onclick=function(){queue=[];openEd(newC(),null,true)};
+[$("ccf1"),$("ccf2")].forEach(function(i){i.onchange=function(){onFiles(i.files)}});
+$("ccgrid").onclick=function(e){var b=e.target.closest(".cc-card");if(!b)return;var c=cards.find(function(x){return x.id===b.dataset.id});if(c){queue=[];openEd(Object.assign({},c,{m:c.m.slice()}),null,false)}};
+$("ccsq").oninput=drawC;
+$("ccfl").onclick=function(e){var b=e.target.closest("button");if(!b)return;view=b.dataset.v;[].forEach.call(this.children,function(x){x.classList.toggle("on",x===b)});drawC()};
+$("ccmi").addEventListener("input",function(e){if(!e.inputType||e.inputType==="insertReplacementText")addMon()});
+$("ccmi").addEventListener("change",addMon);$("ccmi").addEventListener("keydown",function(e){if(e.key==="Enter"){e.preventDefault();addMon()}});$("ccma").onclick=addMon;
+$("ccm").onclick=function(e){var b=e.target.closest("[data-rm]");if(!b)return;cur.c.m=cur.c.m.filter(function(d){return d!==+b.dataset.rm});chips()};
+$("ccst").onclick=function(e){var b=e.target.closest("button");if(!b)return;cur.c.o=b.dataset.s==="own";if(cur.c.o&&!cur.c.q)cur.c.q=1;stat()};
+$("ccqm").onclick=function(){cur.c.q=Math.max(1,cur.c.q-1);stat()};$("ccqp").onclick=function(){cur.c.q=Math.min(9999,cur.c.q+1);stat()};
+$("ccsv").onclick=function(){if(saveEd()){if(!queue.length)toast(t("cc_saved"));nextEd()}};$("ccsk").onclick=nextEd;$("ccx").onclick=closeEd;
+$("ccd").addEventListener("click",function(e){if(e.target===this)closeEd()});
+document.addEventListener("keydown",function(e){if(e.key==="Escape"&&$("ccd").classList.contains("open"))closeEd()});
+$("ccdel").onclick=function(){var b=this;if(!b.dataset.a){b.dataset.a=1;b.textContent=t("cc_sure");setTimeout(function(){if(b.isConnected&&b.dataset.a){delete b.dataset.a;b.textContent=t("del")}},3000);return}
+var id=cur.c.id,pr=cur.prev;cards=cards.filter(function(x){return x.id!==id});delete IMG[id];idbW(id,null);sCards();if(window.bnPurge)window.bnPurge(id);sync(pr);drawC();closeEd()};
+$("ccexp").onclick=function(){try{var o={app:"pokecollect-cards",v:2,cards:cards.map(function(c){return Object.assign({},c,{img:IMG[c.id]||""})})},a=document.createElement("a");a.href=URL.createObjectURL(new Blob([JSON.stringify(o)],{type:"application/json"}));a.download="kartlarim-"+new Date().toISOString().slice(0,10)+".json";document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove()},1500);toast(t("cc_expd",{n:cards.length}))}catch(e){}};
+$("ccimp").onclick=function(){$("ccimpf").value="";$("ccimpf").click()};
+$("ccimpf").onchange=function(){var f=this.files[0];if(!f)return;var r=new FileReader();r.onload=function(){try{var o=JSON.parse(r.result),a=o&&o.cards,n=0,nm=[];if(!Array.isArray(a))throw 0;
+a.forEach(function(x){if(!x||typeof x.id!=="string"||typeof x.n!=="string")return;var c={id:x.id,n:x.n,m:(Array.isArray(x.m)?x.m:[]).map(Number).filter(function(d){return DBM[d]}).slice(0,3),s:String(x.s||""),no:String(x.no||""),r:String(x.r||""),v:String(x.v||"Normal"),o:x.o!==false,q:0,u:typeof x.u==="string"?x.u:""};c.q=c.o?Math.max(1,Math.min(9999,+x.q||1)):0;
+var i=cards.findIndex(function(y){return y.id===c.id});if(i>=0)nm=nm.concat(mn(cards[i]));if(i<0)cards.push(c);else cards[i]=c;nm=nm.concat(mn(c));
+if(typeof x.img==="string"&&x.img.indexOf("data:image/")===0){IMG[c.id]=x.img;idbW(c.id,x.img)}n++});sCards();sync(nm);drawC();toast(t("cc_impd",{n:n}))}catch(e){toast(t("cc_impf"))}};r.readAsText(f)};
+window.tcgOpen=drawC;
+window.openPokemonTCG=function(name){dpage("tcg");view="all";[].forEach.call($("ccfl").children,function(x){x.classList.toggle("on",x.dataset.v==="all")});$("ccsq").value=name;drawC()};
+window.TCGX={inv:function(){var o={};cards.forEach(function(c){if(c.o&&c.q>0){o[c.id]={};o[c.id][c.v||"Normal"]=c.q}});return o},
+wanted:function(){var o={};cards.forEach(function(c){if(!c.o)o[c.id]=true});return o},
+meta:function(){var o={};cards.forEach(function(c){o[c.id]={n:c.n,no:c.no,r:c.r,s:c.s,i:IMG[c.id]||c.u||"",p:c.m.slice(0,2)}});return o},
+addManual:function(id,m,own){var c={id:id,n:m.n,m:(m.p||[]).map(Number).filter(function(d){return DBM[d]}),s:m.s||"",no:m.no||"",r:"",v:"Normal",q:own?1:0,o:!!own};cards.push(c);sCards();sync(own?mn(c):[]);drawC()}};
+var _al=applyLang;applyLang=function(){_al();drawC()};
+applyLang();
 })();
 </script>
 
@@ -1274,7 +805,7 @@ window.TCGX={inv:function(){return inv},wanted:function(){return wanted},meta:fu
 <script>
 (function(){
 "use strict";
-var W=[["tab","Binder","Binder"],["tabs","Stats","İstatistik"],["new","New binder","Yeni binder"],["name","Binder name","Binder adı"],["size","Pocket grid","Cep düzeni"],["pages","Pages","Sayfa sayısı"],["create","Create","Oluştur"],["auto","Auto-fill","Otomatik doldur"],["del","Delete","Sil"],["sure","Sure? Tap again","Emin misin? Tekrar dokun"],["page","Page","Sayfa"],["sum","{f}/{t} slots · {o} owned · {h} hunting","{f}/{t} cep · {o} elimde · {h} aranıyor"],["hunt","Hunting","Aranıyor"],["done","Page complete!","Sayfa tamam!"],["pick","Pick a card","Kart seç"],["rem","Remove from slot","Cepten çıkar"],["have","In my collection","Koleksiyonumdakiler"],["want","Wanted · shown in black & white","Aranan · siyah-beyaz görünür"],["none","No cards yet. Add cards in the Card Collection tab, or add one by hand below.","Henüz kart yok. Card Collection sekmesinden kart ekle veya aşağıdan elle ekle."],["search","Search cards…","Kart ara…"],["manual","Add a card by hand","Elle kart ekle"],["mon","Pokémon name","Pokémon adı"],["setno","Set and number (optional)","Set ve numara (isteğe bağlı)"],["iown","I own it","Elimde"],["ihunt","I’m hunting it","Arıyorum"],["addb","Add","Ekle"],["nomon","Pick a Pokémon from the list.","Listeden bir Pokémon seç."],["empty","Create your first binder and arrange your cards page by page. Cards you are still hunting show up in black & white until you get them.","İlk binder’ını oluştur ve kartlarını sayfa sayfa diz. Hâlâ aradığın kartlar, sen onları bulana kadar siyah-beyaz görünür."],["filled","Auto-filled {n} slots.","{n} cep dolduruldu."],["full","No empty slots left.","Boş cep kalmadı."],["s_mon","Pokémon","Pokémon"],["s_uni","Unique cards","Farklı kart"],["s_tot","Cards owned","Toplam kart"],["s_want","Wanted","Aranan"],["s_gen","Progress by generation","Nesillere göre ilerleme"],["s_close","Closest to finished","Bitirmeye en yakın"],["s_bad","Badges","Rozetler"],["s_rec","Recently collected","Son toplananlar"],["s_none","Nothing yet.","Henüz yok."],
+var W=[["tab","Binder","Binder"],["tabs","Stats","İstatistik"],["new","New binder","Yeni binder"],["name","Binder name","Binder adı"],["size","Pocket grid","Cep düzeni"],["pages","Pages","Sayfa sayısı"],["create","Create","Oluştur"],["auto","Auto-fill","Otomatik doldur"],["del","Delete","Sil"],["sure","Sure? Tap again","Emin misin? Tekrar dokun"],["page","Page","Sayfa"],["sum","{f}/{t} slots · {o} owned · {h} hunting","{f}/{t} cep · {o} elimde · {h} aranıyor"],["hunt","Hunting","Aranıyor"],["done","Page complete!","Sayfa tamam!"],["pick","Pick a card","Kart seç"],["rem","Remove from slot","Cepten çıkar"],["have","In my collection","Koleksiyonumdakiler"],["want","Wanted · shown in black & white","Aranan · siyah-beyaz görünür"],["none","No cards yet. Add cards in the My Cards tab, or add one by hand below.","Henüz kart yok. Kartlarım sekmesinden kart ekle veya aşağıdan elle ekle."],["search","Search cards…","Kart ara…"],["manual","Add a card by hand","Elle kart ekle"],["mon","Pokémon name","Pokémon adı"],["setno","Set and number (optional)","Set ve numara (isteğe bağlı)"],["iown","I own it","Elimde"],["ihunt","I’m hunting it","Arıyorum"],["addb","Add","Ekle"],["nomon","Pick a Pokémon from the list.","Listeden bir Pokémon seç."],["empty","Create your first binder and arrange your cards page by page. Cards you are still hunting show up in black & white until you get them.","İlk binder’ını oluştur ve kartlarını sayfa sayfa diz. Hâlâ aradığın kartlar, sen onları bulana kadar siyah-beyaz görünür."],["filled","Auto-filled {n} slots.","{n} cep dolduruldu."],["full","No empty slots left.","Boş cep kalmadı."],["s_mon","Pokémon","Pokémon"],["s_uni","Unique cards","Farklı kart"],["s_tot","Cards owned","Toplam kart"],["s_want","Wanted","Aranan"],["s_gen","Progress by generation","Nesillere göre ilerleme"],["s_close","Closest to finished","Bitirmeye en yakın"],["s_bad","Badges","Rozetler"],["s_rec","Recently collected","Son toplananlar"],["s_none","Nothing yet.","Henüz yok."],
 ["b1","First catch","İlk yakalama"],["b2","10 Pokémon","10 Pokémon"],["b3","25% complete","%25 tamam"],["b4","50% complete","%50 tamam"],["b5","75% complete","%75 tamam"],["b6","Master collector","Usta koleksiyoncu"],["b7","First line done","İlk hat tamam"],["b8","5 lines done","5 hat tamam"],["b9","Generation done","Nesil tamam"],["b10","10 unique cards","10 farklı kart"],["b11","50 unique cards","50 farklı kart"],["b12","Binder builder","Binder kurucusu"],["b13","Perfect page","Kusursuz sayfa"],["b14","On the hunt","Av başında"]];
 W.forEach(function(w){I.en["bn_"+w[0]]=w[1];I.tr["bn_"+w[0]]=w[2]});
 function bt(k,a){return t("bn_"+k,a)}
@@ -1383,7 +914,7 @@ function stsRender(){
    +'<h3 class="sth">'+bt("s_bad")+' · '+BD.filter(function(x){return x[2]}).length+' / '+BD.length+'</h3><div class="sbd">'+BD.map(function(x){return'<div class="sbi'+(x[2]?'':' lk')+'"><span>'+x[0]+'</span>'+bt(x[1])+'</div>'}).join("")+'</div>'
    +'<h3 class="sth">'+bt("s_rec")+'</h3>'+(rec.map(function(x){return'<div class="scl"><b>'+esc(x.n)+'</b><span>'+rel(x.t)+'</span></div>'}).join("")||'<p class="hint">'+bt("s_none")+'</p>');
 }
-window.bndOpen=bRender;window.stsOpen=stsRender;
+window.bnPurge=function(id){S.list.forEach(function(b){b.slots.forEach(function(v,i){if(v===id)b.slots[i]=null})});sv();bRender()};window.bndOpen=bRender;window.stsOpen=stsRender;
 $("bndBtn").addEventListener("click",function(){dpage("bnd");try{location.hash="binder"}catch(e){}});
 $("stsBtn").addEventListener("click",function(){dpage("sts");try{location.hash="stats"}catch(e){}});
 var _al=applyLang;applyLang=function(){_al();bRender();if(document.body.classList.contains("pg-sts"))stsRender()};
