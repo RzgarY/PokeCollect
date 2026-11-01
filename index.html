@@ -1,0 +1,507 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <script>
+      try {
+        var th = localStorage.getItem("pokemon-theme");
+        if (th === "light" || th === "dark") document.documentElement.dataset.theme = th;
+      } catch (e) {}
+    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Pokémon Card Checklist</title>
+    <meta
+      name="description"
+      id="mdesc"
+      content="Track your Pokémon card collection: checklist by generation, Pokédex, TCG sets, binders and stats. Free, private, saved in your browser."
+    />
+    <meta name="theme-color" content="#f2f3fa" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0d0f18" media="(prefers-color-scheme: dark)" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="assets/img/og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:locale" id="ogl" content="en_US" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="manifest" href="manifest.json" />
+    <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png" />
+    <meta property="og:title" id="ogt" content="Pokémon Card Checklist" />
+    <meta
+      property="og:description"
+      id="ogd"
+      content="Gotta collect ’em all! Track your cards, Pokédex, TCG sets and binders."
+    />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='14' fill='%23fff' stroke='%232a2d40' stroke-width='2.5'/%3E%3Cpath d='M2 16a14 14 0 0 1 28 0z' fill='%23ff4d5e'/%3E%3Cpath d='M2 16h28' stroke='%232a2d40' stroke-width='2.5'/%3E%3Ccircle cx='16' cy='16' r='4.5' fill='%23fff' stroke='%232a2d40' stroke-width='2.5'/%3E%3C/svg%3E"
+    />
+    <link
+      rel="preload"
+      href="assets/fonts/nunito-latin.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link rel="stylesheet" href="css/fonts.css?v=d283fdd5" />
+    <link rel="stylesheet" href="css/base.css?v=f3cf6497" />
+    <link rel="stylesheet" href="css/intro.css?v=4f230405" />
+    <link rel="stylesheet" href="css/my-cards.css?v=83915691" />
+    <link rel="stylesheet" href="css/binder-stats.css?v=fea2e04b" />
+  </head>
+  <body>
+    <div id="pdx" aria-hidden="true">
+      <div class="pdx-bg"></div>
+      <div class="pdx-band"></div>
+      <div class="pdx-h pdx-t"></div>
+      <div class="pdx-h pdx-b"></div>
+      <div class="pdx-sp" role="img" aria-label="Loading"></div>
+    </div>
+    <script>
+      (function () {
+        var MIN = 1500 /* en az yükleme süresi (ms) */,
+          H = document.documentElement,
+          P = document.getElementById("pdx"),
+          mq = matchMedia("(orientation:portrait) and (max-width:900px)"),
+          ok = document.readyState === "complete",
+          tm = false;
+        H.classList.add("pdx-l");
+        function go() {
+          if (!ok || !tm || P.classList.contains("pdx-open")) return;
+          var m = mq.matches;
+          P.classList.add("pdx-open", m ? "pdx-mob" : "pdx-out");
+          H.classList.remove("pdx-l");
+
+          setTimeout(
+            function () {
+              if (m) H.classList.add("pdx-r");
+              P.remove();
+            },
+            m ? 1500 : 1900,
+          );
+        }
+        /* sayfanın en üstüne / en altına yaklaştıkça Pokédex parçası çıkar (T = mesafe, px) */
+        function upd() {
+          var y = scrollY,
+            mx = H.scrollHeight - innerHeight,
+            T = 120;
+          H.style.setProperty("--rt", Math.max(0, Math.min(1, 1 - y / T)));
+          H.style.setProperty("--rb", Math.max(0, Math.min(1, 1 - (mx - y) / T)));
+        }
+        var tk = 0;
+        function sc() {
+          if (tk) return;
+          tk = requestAnimationFrame(function () {
+            tk = 0;
+            if (H.classList.contains("pdx-c")) upd();
+          });
+        }
+
+        setTimeout(function () {
+          tm = true;
+          go();
+        }, MIN);
+        setTimeout(function () {
+          ok = true;
+          tm = true;
+          go();
+        }, 8000); /* yedek: load gelmezse yine de aç */
+        if (!ok)
+          addEventListener("load", function () {
+            ok = true;
+            go();
+          });
+      })();
+    </script>
+    <div class="pdx-pk pdx-pt" aria-hidden="true"></div>
+
+    <main id="app">
+      <div class="langbar">
+        <button
+          class="ib setb"
+          id="setBtn"
+          type="button"
+          data-al="set_title"
+          aria-label="Settings"
+          aria-haspopup="dialog"
+        >
+          ⚙️
+        </button>
+      </div>
+      <header class="top">
+        <h1 class="pk tag">Gotta collect ’em all!</h1>
+      </header>
+      <div class="navrow">
+        <nav class="tabs dxtabs">
+          <button class="b on" data-pg="col" data-i="tabcol">Koleksiyon</button
+          ><button class="b" data-pg="tcg" type="button" data-i="tabcc">Kartlarım</button
+          ><button class="b" data-pg="dex" data-i="tabdex">Pokédex</button>
+        </nav>
+        <button class="ib navb" id="bndBtn" data-al="bn_tab" aria-label="Binder">📖</button>
+      </div>
+      <div id="tcgOverlay">
+        <div id="ccp">
+          <h2 class="cc-h" data-i="cc_title"></h2>
+          <p class="cc-sub" data-i="cc_sub"></p>
+          <div class="cc-add">
+            <button class="cc-btn pri" id="cccam" type="button" data-i="cc_cam"></button
+            ><button class="cc-btn" id="ccgal" type="button" data-i="cc_gal"></button>
+          </div>
+          <button class="cc-link" id="ccman" type="button" data-i="cc_man"></button>
+          <input type="file" id="ccf1" accept="image/*" capture="environment" hidden /><input
+            type="file"
+            id="ccf2"
+            accept="image/*"
+            multiple
+            hidden
+          /><input type="file" id="ccimpf" accept="application/json,.json" hidden />
+          <input
+            id="ccsq"
+            type="search"
+            data-ph="cc_search"
+            autocomplete="off"
+            style="margin-top: 14px"
+          />
+          <div class="cc-fl" id="ccfl" style="margin-top: 10px">
+            <button type="button" data-v="all" data-i="cc_all" class="on"></button
+            ><button type="button" data-v="own" data-i="cc_own"></button
+            ><button type="button" data-v="want" data-i="cc_want"></button>
+          </div>
+          <div class="cc-sumr">
+            <div class="cc-sum" id="ccsum"></div>
+            <button class="b" id="ccsel" type="button"></button>
+          </div>
+          <div class="cc-bar" id="ccbar" hidden>
+            <span id="ccbn"></span
+            ><button class="b" id="ccball" type="button" data-i="cc_selall"></button
+            ><button class="b dan" id="ccbdel" type="button"></button>
+          </div>
+          <div id="ccgrid"></div>
+          <div class="cc-bk">
+            <button class="b" id="ccexp" type="button" data-i="cc_exp"></button
+            ><button class="b" id="ccimp" type="button" data-i="cc_imp"></button
+            ><button
+              class="b dan"
+              id="ccwipe"
+              type="button"
+              data-i="cc_wipe"
+              style="margin-left: auto"
+            ></button>
+          </div>
+          <p class="hint" data-i="cc_hint"></p>
+        </div>
+      </div>
+      <section class="hero">
+        <div class="ring">
+          <svg viewBox="0 0 80 80">
+            <circle class="rb" cx="40" cy="40" r="34" />
+            <circle
+              class="rf"
+              id="ring"
+              cx="40"
+              cy="40"
+              r="34"
+              transform="rotate(-90 40 40)"
+            /></svg
+          ><b id="rtx">0%</b>
+        </div>
+        <div class="hx">
+          <div class="big"><b id="cnt">0</b><span id="tot">/ 0</span></div>
+          <div class="lab" data-i="collected">kart toplandı</div>
+          <div class="lab2" id="left"></div>
+        </div>
+      </section>
+      <div class="ctl">
+        <div class="srch">
+          <span aria-hidden="true">🔍</span
+          ><input
+            id="q"
+            type="search"
+            data-ph="search"
+            placeholder="Pokémon ara…"
+            autocomplete="off"
+          />
+        </div>
+        <div class="seg">
+          <button class="b on" data-f="all" data-i="all">Hepsi</button
+          ><button class="b" data-f="have" data-i="have">Elimde</button
+          ><button class="b" data-f="miss" data-i="miss">Eksik</button>
+        </div>
+      </div>
+      <div class="banner">
+        <span data-i="editmode">Düzenleme modu: karta dokun.</span
+        ><span class="bt2"
+          ><button class="b" id="exp" data-i="export">Yedekle</button
+          ><button class="b" id="imp" data-i="import">Yükle</button
+          ><button class="b dan" id="reset" data-i="reset">İşaretleri sıfırla</button
+          ><button class="b dan" id="delall" data-i="delall">Hepsini sil</button></span
+        ><input type="file" id="impf" accept="application/json,.json" hidden />
+      </div>
+      <div id="list"></div>
+      <section class="dexv" id="dex">
+        <div class="srch">
+          <span aria-hidden="true">🔍</span
+          ><input id="dq" type="search" data-ph="dsearch" autocomplete="off" />
+        </div>
+        <div class="gch" id="dgch"></div>
+        <div class="dgrid" id="dgrid"></div>
+      </section>
+      <section class="pgx" id="bnd"></section>
+      <section class="pgx" id="sts"></section>
+      <footer class="ft" data-i="foot"></footer>
+    </main>
+    <div class="pdx-pk pdx-pb" aria-hidden="true"></div>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <div class="fabs">
+      <button class="fab fe" id="edb" aria-pressed="false">
+        <span aria-hidden="true">✎</span> <span id="edt">Düzenle</span></button
+      ><button class="fab" id="addb">
+        <span aria-hidden="true">＋</span> <span data-i="addcard">Kart ekle</span>
+      </button>
+    </div>
+    <div
+      class="dlg"
+      id="add"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Kart ekle"
+      data-al="addcard"
+    >
+      <div class="box wide">
+        <div class="bh">
+          <h3 data-i="addcard">Kart ekle</h3>
+          <button class="ib" id="addx" aria-label="Kapat" data-al="close">✕</button>
+        </div>
+        <button
+          class="b pri"
+          id="stb"
+          data-i="stb"
+          type="button"
+          style="flex: none; width: 100%; margin: 0 0 10px"
+        >
+          ★ Starters ekle (Gen 1–9)
+        </button>
+        <div class="srch2">
+          <span aria-hidden="true">🔍</span
+          ><input
+            id="pq"
+            type="search"
+            data-ph="pq"
+            placeholder="Listede ara (isteğe bağlı)"
+            autocomplete="off"
+          />
+        </div>
+        <div class="gch" id="gch"></div>
+        <div class="pg" id="pg"></div>
+        <div class="pbar">
+          <select id="ag" data-al="agl" aria-label="Section to add to"></select>
+          <div class="orow">
+            <label class="ck"
+              ><input type="checkbox" id="afam" checked />
+              <span data-i="fam">Evrim ailesiyle birlikte</span></label
+            ><label class="ck"
+              ><input type="checkbox" id="aown" /> <span data-i="have">Elimde</span></label
+            >
+          </div>
+          <button class="b pri" id="aok">Ekle</button>
+          <div class="m" id="amsg"></div>
+        </div>
+        <details class="man">
+          <summary data-i="manual">Listede yok mu? Elle ekle</summary>
+          <div class="mr">
+            <input id="a1" data-ph="cardname" placeholder="Kart adı" autocomplete="off" /><button
+              class="b"
+              id="a1b"
+              data-i="add"
+            >
+              Ekle
+            </button>
+          </div>
+        </details>
+      </div>
+    </div>
+    <div
+      class="dlg"
+      id="dlg"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Kartı düzenle"
+      data-al="editcard"
+    >
+      <div class="box">
+        <h3 id="dt"></h3>
+        <label data-i="name">Ad</label><input id="en" autocomplete="off" />
+        <label data-i="section">Bölüm (gen)</label
+        ><select id="es"></select>
+        <label data-i="row">Satır</label
+        ><select id="er"></select>
+        <label class="ck" id="erl"
+          ><input type="checkbox" id="erow" />
+          <span data-i="moverow">Tüm evrim satırını taşı</span></label
+        >
+        <label data-i="addevo">Evrim ekle (bu karttan sonra)</label
+        ><input id="ev" data-ph="eg" placeholder="Örn: Raichu" autocomplete="off" />
+        <div class="bt">
+          <button class="b pri" id="esave" data-i="save">Kaydet</button
+          ><button class="b dan" id="edel">Sil</button
+          ><button class="b" id="eclose" data-i="close">Kapat</button>
+        </div>
+        <div class="m e" id="emsg"></div>
+      </div>
+    </div>
+    <div class="dlg" id="dxd" role="dialog" aria-modal="true" aria-labelledby="dxn">
+      <div class="box">
+        <div class="bh">
+          <h3 id="dxn"></h3>
+          <button class="ib" id="dxx" aria-label="Kapat" data-al="close">✕</button>
+        </div>
+        <div id="dxb"></div>
+      </div>
+    </div>
+    <div class="dlg" id="ccd" role="dialog" aria-modal="true" aria-labelledby="ccdt">
+      <div class="box">
+        <div class="bh">
+          <h3 id="ccdt"></h3>
+          <button class="ib" id="ccx" aria-label="Close" data-al="close">✕</button>
+        </div>
+        <div class="cc-pv" id="ccpv"></div>
+        <div class="cc-pb">
+          <button class="b" id="ccecam" type="button" data-i="cc_cam"></button
+          ><button class="b" id="ccegal" type="button" data-i="cc_gal"></button>
+        </div>
+        <label data-i="cc_name"></label><input id="ccn" autocomplete="off" />
+        <label data-i="cc_mon"></label>
+        <div class="cc-chips" id="ccm"></div>
+        <div class="cc-cb">
+          <input id="ccmi" autocomplete="off" data-ph="cc_monph" />
+          <div class="cc-dd" id="ccmid" hidden></div>
+        </div>
+        <div class="cc-g2">
+          <div>
+            <label data-i="cc_set"></label>
+            <div class="cc-cb">
+              <input id="ccs" autocomplete="off" placeholder="—" />
+              <div class="cc-dd" id="ccsd" hidden></div>
+            </div>
+          </div>
+          <div><label data-i="cc_no"></label><input id="ccno" autocomplete="off" /></div>
+        </div>
+        <div class="cc-g2">
+          <div>
+            <label data-i="cc_rar"></label
+            ><select id="ccr"></select>
+          </div>
+          <div>
+            <label data-i="cc_var"></label
+            ><select id="ccv"></select>
+          </div>
+        </div>
+        <label data-i="cc_status"></label>
+        <div class="cc-fl" id="ccst">
+          <button type="button" data-s="own" data-i="cc_sown"></button
+          ><button type="button" data-s="want" data-i="cc_swant"></button>
+        </div>
+        <div id="ccqw">
+          <label data-i="cc_qty"></label>
+          <div class="cc-q2">
+            <button class="b" id="ccqm" type="button">−</button><b id="ccqn">1</b
+            ><button class="b" id="ccqp" type="button">＋</button>
+          </div>
+        </div>
+        <div class="bt">
+          <button class="b pri" id="ccsv" type="button"></button
+          ><button class="b" id="ccsk" type="button" data-i="cc_skip"></button
+          ><button class="b dan" id="ccdel" type="button"></button>
+        </div>
+        <div class="m e" id="ccmsg"></div>
+      </div>
+    </div>
+    <div class="dlg" id="setd" role="dialog" aria-modal="true" aria-labelledby="setdt">
+      <div class="box">
+        <div class="bh">
+          <h3 id="setdt" data-i="set_title">Settings</h3>
+          <button class="ib" id="setx" type="button" data-al="close" aria-label="Close">✕</button>
+        </div>
+        <div class="set-h" id="setlh" data-i="set_lang">Language</div>
+        <div class="lsw wide" role="group" aria-labelledby="setlh">
+          <button type="button" data-l="tr">Türkçe</button
+          ><button type="button" data-l="en">English</button>
+        </div>
+        <div class="set-h" id="setth" data-i="set_theme">Theme</div>
+        <div class="tsw wide" role="group" aria-labelledby="setth">
+          <button type="button" data-t="auto" data-i="th_auto">Auto</button
+          ><button type="button" data-t="light" data-i="th_light">Light</button
+          ><button type="button" data-t="dark" data-i="th_dark">Dark</button>
+        </div>
+        <button class="b set-row" id="stsBtn" type="button">
+          <span aria-hidden="true">📊</span> <span data-i="bn_tabs">Stats</span>
+        </button>
+      </div>
+    </div>
+    <div class="dlg" id="bnewd" role="dialog" aria-modal="true" data-al="bn_new">
+      <div class="box">
+        <div class="bh">
+          <h3 data-i="bn_new">New binder</h3>
+          <button class="ib" id="bnx" aria-label="Close">✕</button>
+        </div>
+        <label data-i="bn_name">Binder name</label><input id="bnname" autocomplete="off" />
+        <label data-i="bn_size">Pocket grid</label
+        ><select id="bnsize">
+          <option value="2,2">2 × 2</option>
+          <option value="3,3" selected>3 × 3</option>
+          <option value="4,3">4 × 3</option>
+          <option value="4,4">4 × 4</option>
+        </select>
+        <label data-i="bn_pages">Pages</label
+        ><input id="bnpages" type="number" min="1" max="60" value="4" />
+        <div class="bt"><button class="b pri" id="bncre" data-i="bn_create">Create</button></div>
+      </div>
+    </div>
+    <div class="dlg" id="bpick" role="dialog" aria-modal="true" data-al="bn_pick">
+      <div class="box">
+        <div class="bh">
+          <h3 data-i="bn_pick">Pick a card</h3>
+          <button class="ib" id="bpx" aria-label="Close">✕</button>
+        </div>
+        <button class="b dan" id="bprm" data-i="bn_rem" style="margin-bottom: 8px">
+          Remove from slot
+        </button>
+        <div class="srch2">
+          <span aria-hidden="true">🔍</span
+          ><input id="bq" type="search" data-ph="bn_search" autocomplete="off" />
+        </div>
+        <div id="bplist"></div>
+        <details class="man">
+          <summary data-i="bn_manual">Add a card by hand</summary>
+          <label data-i="bn_mon">Pokémon name</label
+          ><input id="bmon" list="bdl" autocomplete="off" /><datalist id="bdl"></datalist>
+          <label data-i="bn_setno">Set and number (optional)</label
+          ><input id="bset" autocomplete="off" /> <label></label
+          ><select id="bown">
+            <option value="own" data-i="bn_iown">I own it</option>
+            <option value="hunt" data-i="bn_ihunt">I’m hunting it</option>
+          </select>
+          <div class="bt"><button class="b pri" id="bmadd" data-i="bn_addb">Add</button></div>
+          <div class="m e" id="bmmsg"></div>
+        </details>
+      </div>
+    </div>
+    <script src="js/data/generations.js?v=b97faee9"></script>
+    <script src="js/core/utils.js?v=a9563bb4"></script>
+    <script src="js/core/storage.js?v=5ab3e324"></script>
+    <script src="js/i18n/i18n.js?v=4738e590"></script>
+    <script src="js/i18n/strings.js?v=4ad07ccd"></script>
+    <script src="js/core/ui.js?v=2add3776"></script>
+    <script src="js/data/pokemon-db.js?v=e12bd67e"></script>
+    <script src="js/features/checklist.js?v=11631c1b"></script>
+    <script src="js/features/add-dialog.js?v=662f04a5"></script>
+    <script src="js/features/edit-dialog.js?v=5ef8cbaf"></script>
+    <script src="js/features/backup-ui.js?v=c00923b7"></script>
+    <script src="js/features/pokedex.js?v=932dbfd3"></script>
+    <script src="js/core/router.js?v=2ffa5f34"></script>
+    <script src="js/features/my-cards.js?v=4ec70d9e"></script>
+    <script src="js/features/binder-stats.js?v=66812e1f"></script>
+    <script src="js/core/a11y.js?v=ee048524"></script>
+    <script src="js/core/settings.js?v=02c6dbac"></script>
+    <script src="js/core/pwa.js?v=535d0d54"></script>
+  </body>
+</html>
