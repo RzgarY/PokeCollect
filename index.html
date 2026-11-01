@@ -296,8 +296,8 @@ if(!ok)addEventListener("load",function(){ok=true;go()});
 <div class="cc-pb"><button class="b" id="ccecam" type="button" data-i="cc_cam"></button><button class="b" id="ccegal" type="button" data-i="cc_gal"></button></div>
 <label data-i="cc_name"></label><input id="ccn" autocomplete="off">
 <label data-i="cc_mon"></label><div class="cc-chips" id="ccm"></div>
-<select id="ccmi"></select>
-<div class="cc-g2"><div><label data-i="cc_set"></label><select id="ccs"></select><input id="ccso" hidden autocomplete="off" style="margin-top:6px"></div><div><label data-i="cc_no"></label><input id="ccno" autocomplete="off"></div></div>
+<div class="cc-cb"><input id="ccmi" autocomplete="off" data-ph="cc_monph"><div class="cc-dd" id="ccmid" hidden></div></div>
+<div class="cc-g2"><div><label data-i="cc_set"></label><div class="cc-cb"><input id="ccs" autocomplete="off" placeholder="—"><div class="cc-dd" id="ccsd" hidden></div></div></div><div><label data-i="cc_no"></label><input id="ccno" autocomplete="off"></div></div>
 <div class="cc-g2"><div><label data-i="cc_rar"></label><select id="ccr"></select></div><div><label data-i="cc_var"></label><select id="ccv"></select></div></div>
 <label data-i="cc_status"></label><div class="cc-fl" id="ccst"><button type="button" data-s="own" data-i="cc_sown"></button><button type="button" data-s="want" data-i="cc_swant"></button></div>
 <div id="ccqw"><label data-i="cc_qty"></label><div class="cc-q2"><button class="b" id="ccqm" type="button">−</button><b id="ccqn">1</b><button class="b" id="ccqp" type="button">＋</button></div></div>
@@ -664,7 +664,7 @@ body.pg-tcg main#app{width:100%;min-width:0;overflow-x:clip}body.pg-tcg{overflow
 .cc-nm{font-size:14px;font-weight:800;margin:8px 0 3px;line-height:1.2}.cc-mt{display:flex;align-items:center;gap:4px;flex-wrap:wrap;font-size:11px;color:var(--mu)}.cc-mt img{width:26px;height:26px;object-fit:contain}
 .cc-bk{display:flex;gap:8px;margin-top:22px}
 .cc-pv{display:flex;justify-content:center;margin:6px 0 10px}.cc-pv img{max-height:240px;max-width:100%;border-radius:12px;box-shadow:var(--sh)}.cc-np{height:120px;display:flex;align-items:center}
-.cc-pb{display:flex;gap:8px}.cc-pb .b{flex:1}.cc-row{display:flex;gap:8px}.cc-row .b{flex:none}.cc-g2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.cc-pb{display:flex;gap:8px}.cc-pb .b{flex:1}.cc-row{display:flex;gap:8px}.cc-row .b{flex:none}.cc-cb{position:relative}.cc-dd{position:absolute;left:0;right:0;top:calc(100% + 4px);max-height:240px;overflow:auto;background:var(--sf);border:1px solid var(--bd);border-radius:14px;box-shadow:var(--sh);z-index:50}.cc-op{padding:10px 14px;cursor:pointer;font-weight:700;display:flex;justify-content:space-between;gap:8px}.cc-op small{color:var(--mu);font-weight:600;font-size:.75rem;align-self:center}.cc-op:hover,.cc-op.on{background:var(--sf2)}.cc-g2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .cc-chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:6px}.cc-chip{display:flex;align-items:center;gap:4px;border:1px solid var(--bd);background:var(--sf2);border-radius:99px;padding:2px 4px 2px 8px;font-weight:800;font-size:13px}.cc-chip img{width:28px;height:28px;object-fit:contain}.cc-chip button{border:0;background:none;color:var(--mu);cursor:pointer;padding:4px 6px}
 .cc-q2{display:flex;align-items:center;gap:14px}.cc-q2 b{min-width:36px;text-align:center;font-size:1.2rem}
 .cc-sumr{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:12px 0}.cc-sumr .cc-sum{margin:0}.cc-bar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px;padding:10px;border:1px solid var(--bd);border-radius:14px;background:var(--sf2)}.cc-bar[hidden]{display:none}.cc-bar span{flex:1;font-weight:800}.cc-card.sel{outline:3px solid var(--ac)}.cc-ck{position:absolute;right:6px;top:6px;width:26px;height:26px;border-radius:50%;background:var(--ac);color:#fff;font-weight:900;display:flex;align-items:center;justify-content:center}
@@ -707,12 +707,12 @@ SETS=[["Scarlet & Violet",["Scarlet & Violet","Paldea Evolved","Obsidian Flames"
 ["—",["Promo"]]];
 var VAR=[["Normal","Normal (düz)","Normal"],["Holofoil","Holo (çizim parlak)","Holofoil (shiny art)"],["Reverse Holofoil","Reverse holo (çizim dışı parlak)","Reverse Holofoil (shiny frame)"],["1st Edition","1. baskı (1st Edition)","1st Edition"],["Unlimited","Unlimited (sınırsız baskı)","Unlimited"],["Poké Ball","Poké Ball deseni","Poké Ball pattern"],["Master Ball","Master Ball deseni","Master Ball pattern"]];
 function fillLists(){var h='<option value="">—</option>';$("ccv").innerHTML=VAR.map(function(x){return'<option value="'+esc(x[0])+'">'+esc(lang==="en"?x[2]:x[1])+'</option>'}).join("");
-$("ccmi").innerHTML='<option value="">'+t("cc_monph")+'</option>'+T.slice(0,9).map(function(g,gi){return'<optgroup label="'+esc(g)+'">'+DB.filter(function(x){return x[2]===gi+1}).map(function(x){return'<option value="'+x[0]+'">#'+pad(x[0])+' '+esc(x[1])+'</option>'}).join("")+'</optgroup>'}).join("");
+$("ccmi").placeholder=t("cc_monph");
 $("ccr").innerHTML=h+RAR.map(function(x){return'<option value="'+esc(x[0])+'">'+esc(lang==="en"?x[2]:x[1])+'</option>'}).join("");
-$("ccs").innerHTML=h+SETS.map(function(g){return'<optgroup label="'+esc(g[0])+'">'+g[1].map(function(n){return'<option value="'+esc(n)+'">'+esc(n)+'</option>'}).join("")+'</optgroup>'}).join("")+'<option value="__o">'+t("cc_other")+'</option>'}
+}
 function hasOpt(sel,v){return[].some.call($(sel).options,function(o){return o.value===v})}
-function setSet(v){var k=!v||hasOpt("ccs",v);$("ccs").value=k?v:"__o";$("ccso").value=k?"":v;$("ccso").hidden=k}
-function getSet(){return $("ccs").value==="__o"?$("ccso").value.trim():$("ccs").value}
+function setSet(v){$("ccs").value=v||""}
+function getSet(){return $("ccs").value.trim()}
 function setVar(v){v=v||"Normal";if(!hasOpt("ccv",v))$("ccv").insertAdjacentHTML("beforeend",'<option value="'+esc(v)+'">'+esc(v)+'</option>');$("ccv").value=v}
 function setRar(v){if(v&&!hasOpt("ccr",v))$("ccr").insertAdjacentHTML("beforeend",'<option value="'+esc(v)+'">'+esc(v)+'</option>');$("ccr").value=v}
 function openEd(c,photo,isNew,i,total){fillLists();
@@ -724,7 +724,7 @@ var d=$("ccdel");d.style.display=isNew?"none":"";d.textContent=t("del");delete d
 function pv(){var s=cur.photo||IMG[cur.c.id]||cur.c.u;$("ccpv").innerHTML=s?'<img alt="" src="'+esc(s)+'">':'<div class="cc-np"><i class="ball"></i></div>'}
 function chips(){$("ccm").innerHTML=cur.c.m.map(function(d){var s=SPR[d];return'<span class="cc-chip">'+(s?'<img alt="" src="'+s+'">':"")+esc(DBM[d][1])+'<button type="button" data-rm="'+d+'" aria-label="✕">✕</button></span>'}).join("")}
 function stat(){var o=cur.c.o;[].forEach.call($("ccst").children,function(b){b.classList.toggle("on",(b.dataset.s==="own")===o)});$("ccqw").style.display=o?"":"none";$("ccqn").textContent=cur.c.q}
-function addMon(){var i=$("ccmi"),d=Number(i.value);if(!d||!DBM[d]){i.value="";return}$("ccmsg").textContent="";
+function addMon(d){var i=$("ccmi");d=Number(d);if(!d||!DBM[d]){i.value="";return}$("ccmsg").textContent="";
 if(cur.c.m.indexOf(d)<0&&cur.c.m.length<3){cur.c.m.push(d);if(!$("ccn").value.trim())$("ccn").value=DBM[d][1]}i.value="";chips()}
 function closeEd(){queue=[];cur=null;$("ccd").classList.remove("open")}
 function nextEd(){if(queue.length&&qi<queue.length-1){qi++;openEd(newC(),queue[qi],true,qi,queue.length)}else closeEd()}
@@ -743,7 +743,18 @@ $("ccman").onclick=function(){queue=[];openEd(newC(),null,true)};
 $("ccgrid").onclick=function(e){var b=e.target.closest(".cc-card");if(!b)return;if(selMode){var k=b.dataset.id;if(sel[k])delete sel[k];else sel[k]=1;drawC();return}var c=cards.find(function(x){return x.id===b.dataset.id});if(c){queue=[];openEd(Object.assign({},c,{m:c.m.slice()}),null,false)}};
 $("ccsq").oninput=drawC;
 $("ccfl").onclick=function(e){var b=e.target.closest("button");if(!b)return;view=b.dataset.v;[].forEach.call(this.children,function(x){x.classList.toggle("on",x===b)});drawC()};
-$("ccmi").addEventListener("change",addMon);$("ccs").addEventListener("change",function(){var o=this.value==="__o";$("ccso").hidden=!o;if(o)$("ccso").focus()});
+function nrm(x){return String(x).toLocaleLowerCase("tr").replace(/ı/g,"i").normalize("NFD").replace(/[\u0300-\u036f]/g,"")}
+function combo(inp,dd,items,pick){var act=-1,cur2=[];
+function render(){var q=nrm(inp.value.trim().replace(/^#/,""));cur2=items().filter(function(x){return!q||nrm(x.l).indexOf(q)>=0||(x.g&&nrm(x.g).indexOf(q)>=0)}).slice(0,60);act=-1;
+dd.innerHTML=cur2.length?cur2.map(function(x,k){return'<div class="cc-op" data-k="'+k+'">'+esc(x.l)+(x.g?'<small>'+esc(x.g)+'</small>':'')+'</div>'}).join(""):'';dd.hidden=!cur2.length}
+function choose(k){var x=cur2[k];if(!x)return;dd.hidden=true;pick(x)}
+inp.addEventListener("input",render);inp.addEventListener("focus",render);
+inp.addEventListener("blur",function(){setTimeout(function(){dd.hidden=true},150)});
+dd.addEventListener("mousedown",function(e){e.preventDefault()});
+dd.addEventListener("click",function(e){var o=e.target.closest(".cc-op");if(o)choose(+o.dataset.k)});
+inp.addEventListener("keydown",function(e){var n=dd.children;if(e.key==="ArrowDown"||e.key==="ArrowUp"){e.preventDefault();if(dd.hidden)render();act=(act+(e.key==="ArrowDown"?1:-1)+n.length)%n.length;[].forEach.call(n,function(c,k){c.classList.toggle("on",k===act)});if(n[act])n[act].scrollIntoView({block:"nearest"})}else if(e.key==="Enter"&&!dd.hidden&&act>=0){e.preventDefault();choose(act)}else if(e.key==="Escape")dd.hidden=true})}
+combo($("ccmi"),$("ccmid"),function(){return DB.filter(function(x){return x[2]<=9}).map(function(x){return{l:"#"+pad(x[0])+" "+x[1],d:x[0],g:null}})},function(x){addMon(x.d)});
+combo($("ccs"),$("ccsd"),function(){var a=[];SETS.forEach(function(g){g[1].forEach(function(n){a.push({l:n,g:g[0]})})});return a},function(x){$("ccs").value=x.l});
 $("ccm").onclick=function(e){var b=e.target.closest("[data-rm]");if(!b)return;cur.c.m=cur.c.m.filter(function(d){return d!==+b.dataset.rm});chips()};
 $("ccst").onclick=function(e){var b=e.target.closest("button");if(!b)return;cur.c.o=b.dataset.s==="own";if(cur.c.o&&!cur.c.q)cur.c.q=1;stat()};
 $("ccqm").onclick=function(){cur.c.q=Math.max(1,cur.c.q-1);stat()};$("ccqp").onclick=function(){cur.c.q=Math.min(9999,cur.c.q+1);stat()};
