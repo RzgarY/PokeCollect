@@ -1,0 +1,17 @@
+# Netlify / Cloudflare Pages. Başka hosting'de aynı kuralları kendi ayarına taşı.
+# Kabuk her seferinde sunucuya sorulur (değişmediyse 304, çok ucuz); eski kod sızmaz.
+/
+  Cache-Control: no-cache
+/index.html
+  Cache-Control: no-cache
+/sw.js
+  Cache-Control: no-cache
+/manifest.json
+  Cache-Control: no-cache
+/css/*
+  Cache-Control: no-cache
+/js/*
+  Cache-Control: no-cache
+# Sprite'lar değişmez; uzun süre saklanabilir.
+/assets/sprites/*
+  Cache-Control: public, max-age=2592000
